@@ -41,8 +41,9 @@ SITE_URL = "https://jasysai-staging.workers.dev"
 # - JWT_SECRET
 
 # Limits and Configuration
-[limits]
-cpu_ms = 50000
+# CPU limits removed - not supported on Free plan
+# [limits]
+# cpu_ms = 50000
 
 # Build configuration
 [build]

@@ -10,7 +10,7 @@
     "deploy:staging": "wrangler deploy --env staging",
     "deploy:production": "wrangler deploy --env production",
     "build": "echo 'Build completed - No build step required for Workers'",
-    "test": "echo 'No tests specified yet' && exit 0",
+    "test": "node test-deploy.js",
     "lint": "echo 'No linting configured yet' && exit 0",
     "format": "echo 'No formatter configured yet' && exit 0",
     "tail:logs": "wrangler tail",
