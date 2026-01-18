@@ -1,58 +1,5 @@
 import { setupRoutes } from './routes/index.js';
 import { logger } from './utils/logger.js';
-import { AuthService } from './auth/auth.service.js';
-
-// Routes that require Cloudflare Access authentication
-function requiresAuthentication(pathname) {
-  // Public routes that don't require authentication
-  const publicRoutes = [
-    '/',                    // Landing page
-    '/api-docs',           // API documentation
-    '/about',              // About page
-    '/blog',               // Blog page
-    '/contact',            // Contact page
-    '/privacy-policy',     // Privacy policy
-    '/terms-of-service',   // Terms of service
-    '/security',           // Security page
-    '/chat/guest',         // Guest chat
-    '/app',                // User login page
-    '/auth/',              // Auth routes (login, register)
-    '/admin'               // Admin login page
-  ];
-
-  // Check for exact public routes
-  if (publicRoutes.includes(pathname)) {
-    return false;
-  }
-
-  // Check for static assets
-  if (pathname.startsWith('/assets/')) {
-    return false;
-  }
-
-  // Protected routes that require authentication
-  const protectedRoutes = [
-    '/app/dashboard',      // User dashboard
-    '/app/',               // Any /app/* except /app itself
-    '/admin/dashboard',    // Admin dashboard
-    '/admin/users',        // Admin user management
-    '/api/user/',          // User API endpoints
-    '/api/admin/'          // Admin API endpoints
-  ];
-
-  // Check if it's a protected route
-  if (protectedRoutes.some(route => pathname.startsWith(route))) {
-    return true;
-  }
-
-  // API routes for chat completions require authentication
-  if (pathname === '/v1/chat/completions') {
-    return true;
-  }
-
-  // Default: allow access (for backwards compatibility)
-  return false;
-}
 
 export default {
   async fetch(request, env, ctx) {
@@ -62,28 +9,6 @@ export default {
         url: request.url,
         userAgent: request.headers.get('user-agent')
       });
-
-      // Check if this request requires authentication
-      const url = new URL(request.url);
-      const requiresAuth = requiresAuthentication(url.pathname);
-
-      if (requiresAuth) {
-        // Validate Cloudflare Access JWT for protected routes
-        const authHeader = request.headers.get('Authorization');
-        if (authHeader && authHeader.startsWith('Bearer ')) {
-          const token = authHeader.slice(7);
-          const validation = await AuthService.validateCloudflareJWT(token);
-          if (!validation.ok) {
-            logger.warn('Invalid JWT', { error: validation.err });
-            return new Response('Unauthorized', { status: 401 });
-          }
-          // Attach payload to request for later use
-          request.cloudflareUser = validation.payload;
-        } else {
-          logger.warn('No JWT provided for protected route', { path: url.pathname });
-          return new Response('Unauthorized', { status: 401 });
-        }
-      }
 
       const response = await setupRoutes(request, env);
       

@@ -58,7 +58,7 @@ export class AuthService {
     try {
       const JWKS = createRemoteJWKSet(new URL('https://jasyscom-corp.cloudflareaccess.com/cdn-cgi/access/certs'));
       const { payload } = await jwtVerify(token, JWKS, {
-        audience: '40c9dc2de1210467f3f35cedc9a6bbf8675695abe8c994b148ce1b0c854d93a0',
+        audience: 'fb4edbe0d8eb099744a689420cd953b8f04f922e37c6a54699a49643adf5aabc',
         issuer: 'https://jasyscom-corp.cloudflareaccess.com'
       });
       return { ok: true, payload };
