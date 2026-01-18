@@ -13,7 +13,7 @@ export const LandingPage = () => `
       <div class="hidden md:flex items-center gap-6">
         <a href="#features" class="text-slate-300 hover:text-white transition">Features</a>
         <a href="#pricing" class="text-slate-300 hover:text-white transition">Pricing</a>
-        <a href="#api" class="text-slate-300 hover:text-white transition">API</a>
+        <a href="/api-docs" class="text-slate-300 hover:text-white transition">API</a>
         <button onclick="showLogin()" class="bg-brand px-6 py-2 rounded-full font-bold hover:bg-brand/90 transition">Sign In</button>
         <button onclick="showRegister()" class="bg-slate-800 px-6 py-2 rounded-full font-bold hover:bg-slate-700 transition">Get Started</button>
       </div>
@@ -28,7 +28,7 @@ export const LandingPage = () => `
       <div class="px-6 py-4 space-y-3">
         <a href="#features" class="block text-slate-300 hover:text-white transition">Features</a>
         <a href="#pricing" class="block text-slate-300 hover:text-white transition">Pricing</a>
-        <a href="#api" class="block text-slate-300 hover:text-white transition">API</a>
+        <a href="/api-docs" class="block text-slate-300 hover:text-white transition">API</a>
         <button onclick="showLogin()" class="w-full bg-brand px-6 py-2 rounded-full font-bold hover:bg-brand/90 transition">Sign In</button>
         <button onclick="showRegister()" class="w-full bg-slate-800 px-6 py-2 rounded-full font-bold hover:bg-slate-700 transition">Get Started</button>
       </div>
@@ -54,9 +54,9 @@ export const LandingPage = () => `
           <button onclick="showRegister()" class="bg-brand text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-brand/90 transition transform hover:scale-105 shadow-lg shadow-brand/25">
             Start Free Trial
           </button>
-          <button onclick="scrollToSection('api')" class="bg-slate-800 text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-slate-700 transition transform hover:scale-105">
+          <a href="/api-docs" class="bg-slate-800 text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-slate-700 transition transform hover:scale-105 inline-block">
             View Documentation
-          </button>
+          </a>
         </div>
       </div>
       
@@ -301,7 +301,7 @@ export const LandingPage = () => `
           
           <div class="bg-slate-800/30 backdrop-blur-sm border border-slate-700 rounded-2xl p-6">
             <h4 class="text-lg font-bold text-white mb-3">📚 Comprehensive Docs</h4>
-            <p class="text-slate-400">Detailed documentation with examples for all programming languages.</p>
+            <p class="text-slate-400">Detailed documentation with examples for all programming languages. <a href="/api-docs" class="text-brand hover:underline">View Documentation →</a></p>
           </div>
           
           <div class="bg-slate-800/30 backdrop-blur-sm border border-slate-700 rounded-2xl p-6">
@@ -351,7 +351,7 @@ export const LandingPage = () => `
           <ul class="space-y-2 text-slate-400 text-sm">
             <li><a href="#features" class="hover:text-white transition">Features</a></li>
             <li><a href="#pricing" class="hover:text-white transition">Pricing</a></li>
-            <li><a href="#api" class="hover:text-white transition">API Docs</a></li>
+            <li><a href="/api-docs" class="hover:text-white transition">API Docs</a></li>
           </ul>
         </div>
         
@@ -466,7 +466,7 @@ export const UserApp = (user) => `
         </div>
         <div class="bg-slate-900 border border-slate-800 p-10 rounded-[2.5rem]">
           <div class="text-slate-500 text-sm mb-4 uppercase tracking-widest font-bold">API Base URL (Cursor/IDE)</div>
-          <code class="block bg-black/50 p-4 rounded-2xl text-brand text-xs break-all border border-brand/20">${CONFIG.site_url}/v1</code>
+          <code class="block bg-black/50 p-4 rounded-2xl text-brand text-xs break-all border border-brand/20">https://jasysai.jasyscom-corp.workers.dev/v1</code>
         </div>
       </div>
       <div class="bg-slate-900 border border-slate-800 p-10 rounded-[2.5rem]">
