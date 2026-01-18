@@ -358,18 +358,18 @@ export const LandingPage = () => `
         <div>
           <h4 class="font-bold text-white mb-4">Company</h4>
           <ul class="space-y-2 text-slate-400 text-sm">
-            <li><a href="#" class="hover:text-white transition">About</a></li>
-            <li><a href="#" class="hover:text-white transition">Blog</a></li>
-            <li><a href="#" class="hover:text-white transition">Contact</a></li>
+            <li><a href="/about" class="hover:text-white transition">About</a></li>
+            <li><a href="/blog" class="hover:text-white transition">Blog</a></li>
+            <li><a href="/contact" class="hover:text-white transition">Contact</a></li>
           </ul>
         </div>
         
         <div>
           <h4 class="font-bold text-white mb-4">Legal</h4>
           <ul class="space-y-2 text-slate-400 text-sm">
-            <li><a href="#" class="hover:text-white transition">Privacy Policy</a></li>
-            <li><a href="#" class="hover:text-white transition">Terms of Service</a></li>
-            <li><a href="#" class="hover:text-white transition">Security</a></li>
+            <li><a href="/privacy-policy" class="hover:text-white transition">Privacy Policy</a></li>
+            <li><a href="/terms-of-service" class="hover:text-white transition">Terms of Service</a></li>
+            <li><a href="/security" class="hover:text-white transition">Security</a></li>
           </ul>
         </div>
       </div>
