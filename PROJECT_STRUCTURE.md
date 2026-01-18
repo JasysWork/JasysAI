@@ -157,6 +157,12 @@ JasysAI/
 - **Rate Limiting**: API abuse prevention
 - **HTTPS Enforcement**: Secure communication only
 
+### Layout Consistency
+- **Unified Main Layout**: Consistent footer and navigation across all pages
+- **Landing Page Theme**: All authentication pages follow the main site design
+- **Link Validation**: All button actions and page links verified for functionality
+- **Responsive Design**: Mobile-friendly layouts maintained across all pages
+
 ### Performance
 - **Cloudflare Workers**: Global edge deployment
 - **Caching Strategy**: Intelligent content caching
