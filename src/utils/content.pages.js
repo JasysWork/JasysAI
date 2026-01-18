@@ -83,6 +83,16 @@ export async function ContentPage(env, pageKey) {
         </svg>
       </button>
     </div>
+    <!-- Mobile Menu -->
+    <div id="mobileMenu" class="hidden md:hidden bg-slate-900/95 backdrop-blur-md border-t border-slate-800/50">
+      <div class="px-6 py-4 space-y-3">
+        <a href="/" class="block text-slate-300 hover:text-white transition">Home</a>
+        <a href="#features" class="block text-slate-300 hover:text-white transition">Features</a>
+        <a href="#pricing" class="block text-slate-300 hover:text-white transition">Pricing</a>
+        <a href="#api" class="block text-slate-300 hover:text-white transition">API</a>
+        <button onclick="showLogin()" class="w-full bg-brand px-6 py-2 rounded-full font-bold hover:bg-brand/90 transition">Sign In</button>
+      </div>
+    </div>
   </nav>
 
   <!-- Content Section -->
@@ -166,9 +176,10 @@ export async function ContentPage(env, pageKey) {
 
   <script>
     function toggleMobileMenu() {
-      // Mobile menu functionality
+      const menu = document.getElementById('mobileMenu');
+      menu.classList.toggle('hidden');
     }
-    
+
     function showLogin() {
       location.href = '/app';
     }
@@ -356,6 +367,21 @@ function getErrorPage(pageKey, errorMessage) {
         <a href="#api" class="text-slate-300 hover:text-white transition">API</a>
         <button onclick="showLogin()" class="bg-brand px-6 py-2 rounded-full font-bold hover:bg-brand/90 transition">Sign In</button>
       </div>
+      <button onclick="toggleMobileMenu()" class="md:hidden text-white">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+        </svg>
+      </button>
+    </div>
+    <!-- Mobile Menu -->
+    <div id="mobileMenu" class="hidden md:hidden bg-slate-900/95 backdrop-blur-md border-t border-slate-800/50">
+      <div class="px-6 py-4 space-y-3">
+        <a href="/" class="block text-slate-300 hover:text-white transition">Home</a>
+        <a href="#features" class="block text-slate-300 hover:text-white transition">Features</a>
+        <a href="#pricing" class="block text-slate-300 hover:text-white transition">Pricing</a>
+        <a href="#api" class="block text-slate-300 hover:text-white transition">API</a>
+        <button onclick="showLogin()" class="w-full bg-brand px-6 py-2 rounded-full font-bold hover:bg-brand/90 transition">Sign In</button>
+      </div>
     </div>
   </nav>
 
@@ -444,6 +470,11 @@ function getErrorPage(pageKey, errorMessage) {
   </footer>
 
   <script>
+    function toggleMobileMenu() {
+      const menu = document.getElementById('mobileMenu');
+      menu.classList.toggle('hidden');
+    }
+
     function showLogin() {
       location.href = '/app';
     }

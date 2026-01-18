@@ -433,11 +433,27 @@ export const UserApp = (user) => `
   <div class="max-w-6xl mx-auto">
     <div class="flex justify-between items-center mb-16">
       <div class="flex items-center gap-3 font-bold text-2xl text-white">${LOGO_SVG} ${CONFIG.site_name} Dashboard</div>
-      <button onclick="logout()" class="text-red-500 text-sm hover:underline">Logout</button>
+      <div class="flex items-center gap-4">
+        <button onclick="toggleMobileMenu()" class="md:hidden text-white">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+          </svg>
+        </button>
+        <button onclick="logout()" class="text-red-500 text-sm hover:underline hidden md:block">Logout</button>
+      </div>
     </div>
 
-    <!-- Tabs -->
-    <div class="flex gap-1 mb-8">
+    <!-- Mobile Menu -->
+    <div id="mobileMenu" class="hidden md:hidden mb-8 bg-slate-900 border border-slate-800 rounded-xl overflow-hidden">
+      <button onclick="showTab('overview')" id="mobile-tab-overview" class="w-full px-6 py-4 text-left font-bold bg-brand text-white border-b border-slate-800">Overview</button>
+      <button onclick="showTab('packages')" id="mobile-tab-packages" class="w-full px-6 py-4 text-left font-bold bg-slate-800 text-slate-400 hover:bg-slate-700 border-b border-slate-800">Packages</button>
+      <button onclick="showTab('history')" id="mobile-tab-history" class="w-full px-6 py-4 text-left font-bold bg-slate-800 text-slate-400 hover:bg-slate-700 border-b border-slate-800">Chat History</button>
+      <button onclick="showTab('keys')" id="mobile-tab-keys" class="w-full px-6 py-4 text-left font-bold bg-slate-800 text-slate-400 hover:bg-slate-700 border-b border-slate-800">API Keys</button>
+      <button onclick="showTab('account')" id="mobile-tab-account" class="w-full px-6 py-4 text-left font-bold bg-slate-800 text-slate-400 hover:bg-slate-700">Account</button>
+    </div>
+
+    <!-- Desktop Tabs -->
+    <div class="hidden md:flex gap-1 mb-8">
       <button onclick="showTab('overview')" id="tab-overview" class="px-6 py-3 rounded-xl font-bold bg-brand text-white">Overview</button>
       <button onclick="showTab('packages')" id="tab-packages" class="px-6 py-3 rounded-xl font-bold bg-slate-800 text-slate-400 hover:bg-slate-700">Packages</button>
       <button onclick="showTab('history')" id="tab-history" class="px-6 py-3 rounded-xl font-bold bg-slate-800 text-slate-400 hover:bg-slate-700">Chat History</button>
@@ -552,12 +568,26 @@ export const UserApp = (user) => `
         el.classList.remove('bg-brand', 'text-white');
         el.classList.add('bg-slate-800', 'text-slate-400');
       });
+      document.querySelectorAll('[id^=mobile-tab-]').forEach(el => {
+        el.classList.remove('bg-brand', 'text-white');
+        el.classList.add('bg-slate-800', 'text-slate-400');
+      });
       document.getElementById('content-' + tab).classList.remove('hidden');
       document.getElementById('tab-' + tab).classList.add('bg-brand', 'text-white');
       document.getElementById('tab-' + tab).classList.remove('bg-slate-800', 'text-slate-400');
+      document.getElementById('mobile-tab-' + tab).classList.add('bg-brand', 'text-white');
+      document.getElementById('mobile-tab-' + tab).classList.remove('bg-slate-800', 'text-slate-400');
+
+      // Close mobile menu after selection
+      document.getElementById('mobileMenu').classList.add('hidden');
 
       if (tab === 'history') loadChatHistory();
       if (tab === 'packages') loadPackages();
+    }
+
+    function toggleMobileMenu() {
+      const menu = document.getElementById('mobileMenu');
+      menu.classList.toggle('hidden');
     }
 
     async function loadChatHistory() {
@@ -670,11 +700,11 @@ export const UserApp = (user) => `
 
 export const AdminApp = (data) => `
 <!DOCTYPE html><html lang="en" class="dark"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Admin Gateway - ${CONFIG.site_name}</title><meta name="description" content="Admin dashboard for ${CONFIG.site_name} management and analytics."><meta name="robots" content="noindex, nofollow"><link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚙️</text></svg>"><meta name="theme-color" content="${CONFIG.seo.theme_color}"><script src="https://cdn.tailwindcss.com"></script></head>
-<body class="bg-black text-slate-300 p-10">
+<body class="bg-black text-slate-300 p-4 md:p-10">
   <div class="max-w-7xl mx-auto">
-    <div class="flex justify-between items-center mb-12">
-      <h1 class="text-4xl font-black text-white tracking-tighter italic">ADMIN <span class="text-brand">GATEWAY</span></h1>
-      <button onclick="logout()" class="text-red-500 text-sm hover:underline">Logout</button>
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 md:mb-12 gap-4">
+      <h1 class="text-2xl md:text-4xl font-black text-white tracking-tighter italic">ADMIN <span class="text-brand">GATEWAY</span></h1>
+      <button onclick="logout()" class="text-red-500 text-sm hover:underline self-end md:self-auto">Logout</button>
     </div>
     <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-12">
       <div class="bg-slate-900 p-8 rounded-3xl border border-slate-800"><div class="text-slate-500 text-xs font-bold mb-1 uppercase tracking-widest">Users</div><div class="text-4xl font-black text-white">${data.userCount}</div></div>
