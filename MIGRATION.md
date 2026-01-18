@@ -2,6 +2,20 @@
 
 This guide helps you migrate from the old file structure to the new organized structure.
 
+## ✅ Free Plan Migration (January 2026)
+
+### Recent Changes for Free Plan Compatibility
+- **CPU Limits Removed**: Eliminated `[limits]` section from `wrangler.toml`
+- **Paid Features Removed**: No Durable Objects, Vectorize, or Queues
+- **Successfully Deployed**: Now running on Cloudflare Workers Free Plan
+- **Zero Cost**: No monthly fees for basic usage
+
+### Migration Impact
+- All core functionality preserved
+- No code changes required
+- Only configuration updates needed
+- Full backward compatibility maintained
+
 ## 📋 File Mapping
 
 ### Old → New File Locations
@@ -195,6 +209,14 @@ main = "worker.js"
 
 # New
 main = "src/index.js"
+
+# ⚠️ IMPORTANT: Remove CPU limits for Free Plan
+# OLD (Paid Feature - Causes Error):
+# [limits]
+# cpu_ms = 50000
+
+# NEW (Free Plan Compatible):
+# CPU limits removed - not supported on Free plan
 ```
 
 ### Update KV Namespace Binding
@@ -204,6 +226,12 @@ main = "src/index.js"
 binding = "JASYSAI_KV"
 id = "your-kv-namespace-id"
 ```
+
+### Free Plan Configuration
+- **CPU Limits**: Removed (paid feature)
+- **Workers**: 100,000 requests/day (free tier)
+- **KV Storage**: 1GB storage, 100K reads/day, 1K writes/day
+- **Cost**: $0/month for basic usage
 
 ## 🧪 Testing Migration
 

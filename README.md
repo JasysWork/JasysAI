@@ -1,4 +1,4 @@
-# JasyAI - Restructured Application
+# JasyAI - AI Gateway Application
 
 A well-organized, maintainable AI gateway application built with modern JavaScript patterns and Cloudflare Workers.
 
@@ -8,7 +8,25 @@ A well-organized, maintainable AI gateway application built with modern JavaScri
 
 **Click the button above to deploy instantly to Cloudflare Workers!**
 
+✅ **Free Plan Compatible** - Deploy without any paid features!
+
 Or follow the [manual deployment guide](DEPLOYMENT.md) for custom setup.
+
+See [Free Plan Setup Guide](FREE_PLAN_SETUP.md) for detailed free plan configuration.
+
+## 🎯 Latest Updates
+
+### ✅ Free Plan Ready (January 2026)
+- Removed all paid Cloudflare features
+- CPU limits configuration removed
+- Successfully deployed to production
+- Full compatibility with Cloudflare Workers Free Plan
+
+### 📊 Deployment Status
+- **Status**: ✅ Successfully Deployed
+- **URL**: https://jasysai.jasyscom-corp.workers.dev
+- **Plan**: Cloudflare Workers Free Plan
+- **Last Updated**: January 18, 2026
 
 ## 🏗️ Project Structure
 
@@ -114,6 +132,12 @@ src/
 
 ## 🚀 Key Features
 
+### ✅ Free Plan Compatible
+- **No Paid Features**: Works entirely on Cloudflare Workers Free Plan
+- **CPU Limits**: Removed for free plan compatibility
+- **KV Storage**: Uses free tier KV storage (1GB, 100K reads/day)
+- **Cost**: $0/month for basic usage
+
 ### Modular Architecture
 - **Separation of Concerns**: Each module has a single responsibility
 - **Dependency Injection**: Clean dependencies between modules
@@ -191,20 +215,33 @@ src/
 
 ## 🔧 Deployment
 
-### Cloudflare Workers
+### ✅ Free Plan Deployment
 ```bash
-# Deploy to Cloudflare Workers
+# Deploy to Cloudflare Workers Free Plan
+npm run deploy
+
+# Or using wrangler directly
 wrangler deploy
 
 # Preview locally
-wrangler dev
+npm run dev
 ```
 
 ### Environment Variables
-- `JASYSAI_KV`: KV namespace binding
+- `JASYSAI_KV`: KV namespace binding (Free tier: 1GB storage)
 - `OPENROUTER_KEY`: OpenRouter API key
 - `ADMIN_USER`: Admin username
 - `ADMIN_PASS`: Admin password
+- `JWT_SECRET`: JWT signing secret
+
+### 📋 Free Plan Limits
+- **Requests**: 100,000 per day
+- **CPU Time**: 10ms per request
+- **KV Storage**: 1GB total
+- **KV Reads**: 100,000 per day
+- **KV Writes**: 1,000 per day
+
+> 💡 **Note**: This application is optimized for free plan usage. Monitor your usage in Cloudflare Dashboard.
 
 ## 📊 Monitoring
 

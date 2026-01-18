@@ -2,6 +2,16 @@
 
 This guide will help you set up automatic deployment from GitHub to Cloudflare Workers with just one click!
 
+## ✅ Free Plan Compatible (Updated January 2026)
+
+This application is fully compatible with Cloudflare Workers Free Plan:
+- **No paid features required**
+- **CPU limits removed** for free plan compatibility
+- **Successfully deployed** to production
+- **Zero cost** for basic usage
+
+> 🎯 **Deployment Status**: ✅ Successfully deployed at https://jasysai.jasyscom-corp.workers.dev
+
 ## 📋 Prerequisites
 
 ### Required Accounts
@@ -46,7 +56,18 @@ preview_id = "your-preview-kv-id"   # From step 3
 routes = [
   { pattern = "your-domain.com/*", zone_name = "your-domain.com" }
 ]
+
+# ⚠️ IMPORTANT: No CPU limits for Free Plan compatibility
+# The following has been removed:
+# [limits]
+# cpu_ms = 50000  # This is a paid feature!
 ```
+
+### Free Plan Configuration Notes
+- **CPU Limits**: Removed (paid feature - not needed for free plan)
+- **KV Storage**: Uses free tier (1GB, 100K reads/day, 1K writes/day)
+- **Workers**: 100,000 requests per day included
+- **No additional costs** for basic usage
 
 ### 5. Set Environment Secrets
 ```bash
@@ -122,25 +143,37 @@ Add this to your `README.md`:
 
 ### Common Issues
 
-#### 1. API Token Permissions
+#### 1. CPU Limits Error (Free Plan)
+```
+Error: CPU limits are not supported for the Free plan
+```
+**Solution**: Remove `[limits]` section from `wrangler.toml` - this is now fixed in the current configuration
+
+#### 2. API Token Permissions
 ```
 Error: API token does not have required permissions
 ```
 **Solution**: Ensure your API token has `Cloudflare Workers:Edit` permission
 
-#### 2. KV Namespace Not Found
+#### 3. Free Plan Usage Limits
+```
+Error: Worker exceeded free plan request limit
+```
+**Solution**: Monitor usage in Cloudflare Dashboard, consider upgrading to paid plan if needed
+
+#### 4. KV Namespace Not Found
 ```
 Error: KV namespace not found
 ```
 **Solution**: Check KV namespace ID in `wrangler.toml` matches your actual namespace
 
-#### 3. Missing Secrets
+#### 5. Missing Secrets
 ```
 Error: Secret OPENROUTER_KEY not found
 ```
 **Solution**: Set all required secrets using `wrangler secret put`
 
-#### 4. Domain Configuration
+#### 6. Domain Configuration
 ```
 Error: Zone not found
 ```
