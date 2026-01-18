@@ -1,7 +1,9 @@
 import { CONFIG } from '../config/index.js';
 import { LOGO_SVG } from './assets.js';
+import { getCurrentUrl } from './helpers.js';
 
-export function ApiDocsPage() {
+export function ApiDocsPage(request) {
+  const currentUrl = getCurrentUrl(request);
   return `
 <!DOCTYPE html><html lang="en" class="dark"><head>
   <meta charset="UTF-8">
@@ -13,9 +15,9 @@ export function ApiDocsPage() {
   <meta property="og:title" content="API Documentation - ${CONFIG.site_name}">
   <meta property="og:description" content="Complete API documentation for JasysAI with examples, SDKs, and integration guides">
   <meta property="og:type" content="website">
-  <meta property="og:url" content="${CONFIG.site_url}/api-docs">
+  <meta property="og:url" content="${currentUrl}/api-docs">
   <meta property="og:site_name" content="${CONFIG.site_name}">
-  <meta property="og:image" content="${CONFIG.site_url}/assets/logo.png">
+  <meta property="og:image" content="${currentUrl}/assets/logo.png">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="API Documentation - ${CONFIG.site_name}">
   <meta name="twitter:description" content="Complete API documentation for JasysAI with examples and SDKs">
@@ -104,7 +106,7 @@ from openai import OpenAI
 
 client = OpenAI(
     api_key="your-api-key",
-    base_url="https://ai.jasyscom-corp.workers.dev/v1"
+    base_url="${currentUrl}/v1"
 )
 
 response = client.chat.completions.create(
@@ -126,7 +128,7 @@ print(response.choices[0].message.content)</code></pre>
       <div class="bg-slate-800/30 backdrop-blur-sm border border-slate-700 rounded-2xl p-6 mb-8">
         <h3 class="text-xl font-bold mb-4">Base URL</h3>
         <div class="bg-slate-900 rounded-lg p-3 font-mono text-sm">
-          <code>https://ai.jasyscom-corp.workers.dev</code>
+          <code>${currentUrl}</code>
         </div>
       </div>
 
@@ -185,7 +187,7 @@ print(response.choices[0].message.content)</code></pre>
         </div>
 
         <h4 class="text-lg font-semibold mb-3 text-green-400">Example Request</h4>
-        <pre><code class="language-bash">curl -X POST "https://ai.jasyscom-corp.workers.dev/v1/chat/completions" \\
+        <pre><code class="language-bash">curl -X POST "${currentUrl}/v1/chat/completions" \\
   -H "Authorization: Bearer your-api-key" \\
   -H "Content-Type: application/json" \\
   -d '{
@@ -264,7 +266,7 @@ print(response.choices[0].message.content)</code></pre>
 
 client = openai.OpenAI(
     api_key="your-api-key",
-    base_url="https://ai.jasyscom-corp.workers.dev/v1"
+    base_url="${currentUrl}/v1"
 )
 
 response = client.chat.completions.create(
@@ -283,7 +285,7 @@ print(response.choices[0].message.content)</code></pre>
 
 const openai = new OpenAI({
   apiKey: 'your-api-key',
-  baseURL: 'https://ai.jasyscom-corp.workers.dev/v1'
+  baseURL: '${currentUrl}/v1'
 });
 
 async function chat() {
@@ -437,7 +439,7 @@ async function chat() {
       responseDiv.textContent = 'Testing API...';
 
       try {
-        const response = await fetch('https://ai.jasyscom-corp.workers.dev/v1/chat/completions', {
+        const response = await fetch('${currentUrl}/v1/chat/completions', {
           method: 'POST',
           headers: {
             'Authorization': \`Bearer \${apiKey}\`,

@@ -482,7 +482,7 @@ export const UserApp = (user) => `
         </div>
         <div class="bg-slate-900 border border-slate-800 p-10 rounded-[2.5rem]">
           <div class="text-slate-500 text-sm mb-4 uppercase tracking-widest font-bold">API Base URL (Cursor/IDE)</div>
-          <code class="block bg-black/50 p-4 rounded-2xl text-brand text-xs break-all border border-brand/20">https://ai.jasyscom-corp.workers.dev/v1</code>
+          <code class="block bg-black/50 p-4 rounded-2xl text-brand text-xs break-all border border-brand/20" id="api-base-url"></code>
         </div>
       </div>
       <div class="bg-slate-900 border border-slate-800 p-10 rounded-[2.5rem]">
@@ -692,6 +692,9 @@ export const UserApp = (user) => `
       localStorage.clear();
       location.href = '/app';
     }
+
+    // Set API base URL dynamically
+    document.getElementById('api-base-url').textContent = window.location.origin + '/v1';
 
     // Default to overview
     showTab('overview');

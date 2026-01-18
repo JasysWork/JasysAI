@@ -47,3 +47,8 @@ export function slugify(text) {
     .replace(/[\s_-]+/g, '-')
     .replace(/^-+|-+$/g, '');
 }
+
+export function getCurrentUrl(request) {
+  const url = new URL(request.url);
+  return url.origin;
+}

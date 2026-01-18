@@ -44,7 +44,7 @@ export async function setupRoutes(request, env) {
       path === '/privacy-policy' || path === '/terms-of-service' || path === '/security') {
     try {
       const pageKey = path.replace('/', '').replace('-', '_');
-      const html = await ContentPage(env, pageKey);
+      const html = await ContentPage(request, env, pageKey);
       return new Response(html, { headers: { 'Content-Type': 'text/html' } });
     } catch (error) {
       console.error('Error serving content page:', error);
@@ -59,7 +59,7 @@ export async function setupRoutes(request, env) {
 
   // API Documentation page
   if (path === '/api-docs') {
-    const html = ApiDocsPage();
+    const html = ApiDocsPage(request);
     return new Response(html, { headers: { 'Content-Type': 'text/html' } });
   }
 

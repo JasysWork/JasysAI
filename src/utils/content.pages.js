@@ -1,8 +1,9 @@
 import { CONFIG } from '../config/index.js';
 import { LOGO_SVG } from './assets.js';
 import { ContentModel } from '../models/index.js';
+import { getCurrentUrl } from './helpers.js';
 
-export async function ContentPage(env, pageKey) {
+export async function ContentPage(request, env, pageKey) {
   try {
     const content = await ContentModel.get(env, pageKey);
     
@@ -35,7 +36,8 @@ export async function ContentPage(env, pageKey) {
 
     const config = pageConfig[pageKey] || { title: 'Content', description: '' };
 
-  const seoMeta = getSEOMeta(pageKey, content, config);
+  const currentUrl = getCurrentUrl(request);
+  const seoMeta = getSEOMeta(pageKey, content, config, currentUrl);
   
   return `
 <!DOCTYPE html><html lang="en" class="dark"><head>
@@ -48,9 +50,9 @@ export async function ContentPage(env, pageKey) {
   <meta property="og:title" content="${seoMeta.title} - ${CONFIG.site_name}">
   <meta property="og:description" content="${seoMeta.description}">
   <meta property="og:type" content="website">
-  <meta property="og:url" content="${CONFIG.site_url}${pageKey === 'about' ? '' : '/' + pageKey.replace('_', '-')}">
+  <meta property="og:url" content="${currentUrl}${pageKey === 'about' ? '' : '/' + pageKey.replace('_', '-')}">
   <meta property="og:site_name" content="${CONFIG.site_name}">
-  <meta property="og:image" content="${CONFIG.site_url}/assets/logo.png">
+  <meta property="og:image" content="${currentUrl}/assets/logo.png">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="${seoMeta.title} - ${CONFIG.site_name}">
   <meta name="twitter:description" content="${seoMeta.description}">
@@ -188,7 +190,8 @@ export async function ContentPage(env, pageKey) {
   } catch (error) {
     console.error('Error rendering content page:', error);
     // Return a proper HTML error page instead of letting it bubble up as JSON
-    return getErrorPage(pageKey, error.message);
+    const currentUrl = getCurrentUrl(request);
+    return getErrorPage(pageKey, error.message, currentUrl);
   }
 }
 
@@ -330,7 +333,7 @@ function getDefaultContent(pageKey) {
   return defaultContent[pageKey] || '<p>Content is being updated. Please check back soon.</p>';
 }
 
-function getErrorPage(pageKey, errorMessage) {
+function getErrorPage(pageKey, errorMessage, currentUrl) {
   const pageTitles = {
     about: 'About Us',
     blog: 'Blog',
@@ -339,9 +342,8 @@ function getErrorPage(pageKey, errorMessage) {
     terms_of_service: 'Terms of Service',
     security: 'Security'
   };
-  
+
   const title = pageTitles[pageKey] || 'Page';
-  const baseUrl = CONFIG.site_url || 'https://ai.jasyscom-corp.workers.dev';
   
   return `
 <!DOCTYPE html><html lang="en" class="dark"><head>
@@ -482,8 +484,7 @@ function getErrorPage(pageKey, errorMessage) {
 </body></html>`;
 }
 
-function getSEOMeta(pageKey, content, config) {
-  const baseUrl = CONFIG.site_url || 'https://ai.jasyscom-corp.workers.dev';
+function getSEOMeta(pageKey, content, config, currentUrl) {
   const pageUrls = {
     about: '',
     blog: '/blog',
