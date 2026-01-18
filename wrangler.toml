@@ -63,25 +63,6 @@ cpu_ms = 50000
 [build]
 command = "npm run build"
 
-# Assets configuration
-[assets]
-directory = "./public"
-binding = "ASSETS"
-
 # Scheduled tasks
 [[triggers]]
 crons = ["0 2 * * *"]  # Daily at 2 AM UTC
-
-# Analytics Engine (optional)
-[[analytics_engine_datasets]]
-binding = "JASYSAI_ANALYTICS"
-
-# Queue consumers (optional)
-[[queues.producers]]
-binding = "JASYSAI_QUEUE"
-queue = "jasysai-queue"
-
-[[queues.consumers]]
-queue = "jasysai-queue"
-max_batch_size = 10
-max_batch_timeout = 30
