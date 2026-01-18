@@ -10,17 +10,14 @@ name = "jasysai"
 [env.staging]
 name = "jasysai-staging"
 
-# KV Namespaces - Uncomment and configure when you have actual KV namespaces
-# [[kv_namespaces]]
-# binding = "JASYSAI_KV"
-# id = "your-actual-kv-id"
-# preview_id = "your-preview-kv-id"
+# KV Namespaces - Configuration for JasyAI application
+[[kv_namespaces]]
+binding = "JASYSAI_KV"
+id = "f7d8d9e8-7c3a-ed-4e5f-9a8b-1234567890ab"
+preview_id = "f7d8d9e8-7c3a-ed-4e5f-9a8b-1234567890ab"
 
-# D1 Database - Uncomment and configure when you have actual D1 database
-# [[d1_databases]]
-# binding = "JASYSAI_DB"
-# database_name = "jasysai-db"
-# database_id = "your-actual-d1-db-id"
+# Note: Replace with your actual KV namespace ID when deploying
+# To create a KV namespace: wrangler kv:namespace create JASYSAI_KV
 
 # Environment Variables
 [vars]

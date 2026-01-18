@@ -80,13 +80,18 @@ export async function apiRoutes(request, env) {
     }
   }
 
-  // Chat API
-  if (path === '/api/chat' && method === 'POST') {
+  // Guest Chat API
+  if (path === '/api/chat/guest' && method === 'POST') {
     const { message, chatId } = await request.json();
-    const user = await DB.get(env, `u:${sess.email}`);
     
-    if (!user) {
-      return new Response(JSON.stringify({ err: 'User not found' }), { status: 404 });
+    // Check guest message limit
+    const guestKey = `guest:${new URL(request.url).hostname}:${request.headers.get('user-agent')}`;
+    const guestData = await DB.get(env, guestKey) || { messageCount: 0, chats: [] };
+    
+    if (guestData.messageCount >= CONFIG.guest_limit) {
+      return new Response(JSON.stringify({ 
+        err: 'Guest message limit reached. Please register or sign in for unlimited chat.' 
+      }), { status: 429 });
     }
 
     try {
@@ -106,7 +111,148 @@ export async function apiRoutes(request, env) {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          model: 'openai/gpt-3.5-turbo',
+          model: CONFIG.default_models.guest[0],
+          messages: [{ role: 'user', content: message }]
+        })
+      });
+
+      if (!response.ok) {
+        const errorData = await response.text();
+        console.error('Proxy API error:', response.status, errorData);
+        throw new Error(`Proxy API error: ${response.status}`);
+      }
+
+      const data = await response.json();
+      const aiResponse = data.choices[0].message.content;
+
+      // Save guest chat history
+      guestData.messageCount++;
+      const chatIndex = guestData.chats.findIndex(c => c.id === chatId);
+      
+      const newMessage = {
+        role: 'user',
+        content: message,
+        timestamp: new Date().toISOString()
+      };
+      
+      const aiMessage = {
+        role: 'assistant',
+        content: aiResponse,
+        timestamp: new Date().toISOString()
+      };
+
+      if (chatIndex >= 0) {
+        guestData.chats[chatIndex].messages.push(newMessage, aiMessage);
+      } else {
+        guestData.chats.push({
+          id: chatId,
+          title: message.substring(0, 50) + '...',
+          created: new Date().toISOString(),
+          messages: [newMessage, aiMessage]
+        });
+      }
+
+      await DB.set(env, guestKey, guestData, 86400); // Expire after 24 hours
+
+      return new Response(JSON.stringify({ ok: true, response: aiResponse }), {
+        headers: { 'Content-Type': 'application/json' }
+      });
+
+    } catch (error) {
+      console.error('Guest Chat API error:', error);
+      return new Response(JSON.stringify({ 
+        err: 'Failed to process chat',
+        details: error.message 
+      }), { status: 500 });
+    }
+  }
+
+  // Get user available models
+  if (path === '/api/user/models' && method === 'GET') {
+    const user = await DB.get(env, `u:${sess.email}`);
+    if (!user) {
+      return new Response(JSON.stringify({ err: 'User not found' }), { status: 404 });
+    }
+    
+    // Combine default user models with unlocked models
+    const availableModels = new Set([
+      ...CONFIG.default_models.user,
+      ...(user.unlocked_models || [])
+    ]);
+    
+    // Get model details
+    try {
+      const res = await fetch('https://openrouter.ai/api/v1/models');
+      const data = await res.json();
+      const models = data.data.filter(m => availableModels.has(m.id)).map(m => ({
+        id: m.id,
+        name: m.name,
+        description: m.description
+      }));
+      
+      return new Response(JSON.stringify(models), {
+        headers: { 'Content-Type': 'application/json' }
+      });
+    } catch (error) {
+      console.error('Error fetching model details:', error);
+      return new Response(JSON.stringify([]), {
+        headers: { 'Content-Type': 'application/json' }
+      });
+    }
+  }
+
+  // Get chat by ID
+  if (path.startsWith('/api/user/chat/') && method === 'GET') {
+    const chatId = path.split('/').pop();
+    const history = await DB.get(env, `chat:${sess.email}`) || [];
+    const chat = history.find(h => h.id === chatId);
+    if (!chat) {
+      return new Response(JSON.stringify({ err: 'Chat not found' }), { status: 404 });
+    }
+    return new Response(JSON.stringify(chat), {
+      headers: { 'Content-Type': 'application/json' }
+    });
+  }
+
+  // User Chat API
+  if (path === '/api/chat' && method === 'POST') {
+    const { message, chatId, model = CONFIG.default_models.user[0] } = await request.json();
+    const user = await DB.get(env, `u:${sess.email}`);
+    
+    if (!user) {
+      return new Response(JSON.stringify({ err: 'User not found' }), { status: 404 });
+    }
+
+    try {
+      // Get API configuration
+      const settings = await DB.get(env, 'sys_settings') || {};
+      const proxyApiKey = settings.proxy_api_key || 'your-proxy-api-key';
+      
+      if (!proxyApiKey) {
+        return new Response(JSON.stringify({ err: 'Proxy API key not configured' }), { status: 500 });
+      }
+
+      // Check if model is available to user
+      const availableModels = new Set([
+        ...CONFIG.default_models.user,
+        ...(user.unlocked_models || [])
+      ]);
+      
+      if (!availableModels.has(model)) {
+        return new Response(JSON.stringify({ 
+          err: 'Model not available. Please purchase a package to unlock this model.' 
+        }), { status: 403 });
+      }
+
+      // Call ai-proxy API
+      const response = await fetch('https://ai-proxy.jasyscom-corp.workers.dev/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${proxyApiKey}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          model: model,
           messages: [{ role: 'user', content: message }]
         })
       });

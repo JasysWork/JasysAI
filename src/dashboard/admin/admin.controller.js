@@ -13,8 +13,26 @@ export class AdminController {
       if (data) recentLogs.push(data);
     }
     
+    // Calculate active users today
+    const today = new Date().toISOString().split('T')[0];
+    let activeToday = 0;
+    let totalUsage = 0;
+    
+    for (const userKey of users.keys) {
+      const user = await DB.get(env, userKey.name);
+      if (user) {
+        // Check if user has usage today
+        if (user.usage_daily && user.usage_daily[today]) {
+          activeToday++;
+        }
+        totalUsage += user.total_used || 0;
+      }
+    }
+    
     return {
       userCount: users.keys.length,
+      activeToday,
+      totalUsage,
       logs: recentLogs.reverse(),
       settings
     };
@@ -36,7 +54,9 @@ export class AdminController {
           name: user.name,
           credits: user.credits,
           created: user.created,
-          total_used: user.total_used || 0
+          total_used: user.total_used || 0,
+          api_keys_count: user.api_keys?.length || 0,
+          unlocked_models_count: user.unlocked_models?.length || 0
         });
       }
     }
@@ -56,5 +76,53 @@ export class AdminController {
     }
     
     return userLogs.reverse();
+  }
+
+  static async deleteUser(env, email) {
+    const user = await DB.get(env, `u:${email}`);
+    if (!user) {
+      return { err: 'User not found' };
+    }
+    
+    // Delete user data
+    await DB.del(env, `u:${email}`);
+    await DB.del(env, `chat:${email}`);
+    
+    // Delete user's logs
+    const logs = await DB.list(env, `log:`);
+    for (const logKey of logs.keys) {
+      const logData = await DB.get(env, logKey.name);
+      if (logData && logData.email === email) {
+        await DB.del(env, logKey.name);
+      }
+    }
+    
+    return { ok: true };
+  }
+
+  static async addCredits(env, email, amount) {
+    const user = await DB.get(env, `u:${email}`);
+    if (!user) {
+      return { err: 'User not found' };
+    }
+    
+    user.credits += amount;
+    await DB.set(env, `u:${email}`, user);
+    
+    return { ok: true, newCredits: user.credits };
+  }
+
+  static async getUserDetails(env, email) {
+    const user = await DB.get(env, `u:${email}`);
+    if (!user) {
+      return null;
+    }
+    
+    const logs = await this.getUserLogs(env, email);
+    
+    return {
+      user,
+      logs
+    };
   }
 }

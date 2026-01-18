@@ -17,12 +17,22 @@ export function UserApp(user) {
         .stat-card { background: white; padding: 1.5rem; border-radius: 8px; border: 1px solid #e2e8f0; }
         .stat-card h3 { color: #64748b; font-size: 0.875rem; margin-bottom: 0.5rem; }
         .stat-card .value { color: #1e293b; font-size: 2rem; font-weight: 600; }
-        .actions { background: white; border-radius: 8px; border: 1px solid #e2e8f0; padding: 1.5rem; }
+        .actions { background: white; border-radius: 8px; border: 1px solid #e2e8f0; padding: 1.5rem; margin-bottom: 2rem; }
         .actions h2 { color: #1e293b; margin-bottom: 1rem; }
         .btn { background: #3b82f6; color: white; padding: 0.75rem 1.5rem; border: none; border-radius: 6px; cursor: pointer; font-size: 0.875rem; margin-right: 0.5rem; }
         .btn:hover { background: #2563eb; }
         .btn-secondary { background: #64748b; }
         .btn-secondary:hover { background: #475569; }
+        .packages { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; }
+        .package-card { background: white; border: 1px solid #e2e8f0; border-radius: 8px; padding: 1.5rem; text-align: center; }
+        .package-card h3 { color: #1e293b; margin-bottom: 0.5rem; }
+        .package-card .price { color: #3b82f6; font-size: 2rem; font-weight: 600; margin-bottom: 1rem; }
+        .package-card .description { color: #64748b; margin-bottom: 1rem; }
+        .package-card .features { list-style: none; margin-bottom: 1.5rem; text-align: left; }
+        .package-card .features li { padding: 0.5rem 0; color: #1e293b; }
+        .package-card .features li:before { content: '✓ '; color: #10b981; font-weight: bold; }
+        .package-card .btn-purchase { background: #10b981; color: white; width: 100%; }
+        .package-card .btn-purchase:hover { background: #059669; }
     </style>
 </head>
 <body>
@@ -53,6 +63,47 @@ export function UserApp(user) {
             <button class="btn btn-secondary" onclick="viewUsage()">View Usage</button>
             <button class="btn btn-secondary" onclick="manageAccount()">Manage Account</button>
         </div>
+        
+        <div class="packages">
+            <div class="package-card">
+                <h3>Basic Package</h3>
+                <div class="price">25,000 IDR</div>
+                <div class="description">Unlock GPT-4 access</div>
+                <ul class="features">
+                    <li>GPT-4 Model Access</li>
+                    <li>Priority Support</li>
+                    <li>10,000 tokens/day limit</li>
+                </ul>
+                <button class="btn btn-purchase" onclick="purchasePackage('basic')">Purchase</button>
+            </div>
+            
+            <div class="package-card">
+                <h3>Premium Package</h3>
+                <div class="price">50,000 IDR</div>
+                <div class="description">Unlock Claude 3 Opus</div>
+                <ul class="features">
+                    <li>GPT-4 Model Access</li>
+                    <li>Claude 3 Opus Access</li>
+                    <li>Priority Support</li>
+                    <li>25,000 tokens/day limit</li>
+                </ul>
+                <button class="btn btn-purchase" onclick="purchasePackage('premium')">Purchase</button>
+            </div>
+            
+            <div class="package-card">
+                <h3>Ultimate Package</h3>
+                <div class="price">100,000 IDR</div>
+                <div class="description">All models unlocked</div>
+                <ul class="features">
+                    <li>All Available Models</li>
+                    <li>GPT-4 Turbo Access</li>
+                    <li>Claude 3 Opus Access</li>
+                    <li>Priority Support</li>
+                    <li>Unlimited tokens</li>
+                </ul>
+                <button class="btn btn-purchase" onclick="purchasePackage('ultimate')">Purchase</button>
+            </div>
+        </div>
     </div>
     
     <script>
@@ -81,6 +132,26 @@ export function UserApp(user) {
         
         function manageAccount() {
             window.location.href = '/app/account';
+        }
+        
+        function purchasePackage(packageId) {
+            const confirmPurchase = confirm('Are you sure you want to purchase this package?');
+            if (confirmPurchase) {
+                fetch('/api/user/package/purchase', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ packageId })
+                })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.ok) {
+                        alert('Package purchased successfully!');
+                        window.location.reload();
+                    } else {
+                        alert('Error: ' + data.err);
+                    }
+                });
+            }
         }
     </script>
 </body>

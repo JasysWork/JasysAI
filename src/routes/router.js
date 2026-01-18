@@ -78,7 +78,14 @@ export async function setupRoutes(request, env) {
     return apiRoutes(request, env);
   }
 
-  // Chat interface
+  // Guest chat interface
+  if (path === '/chat/guest') {
+    return new Response(getGuestChatHTML(), {
+      headers: { 'Content-Type': 'text/html' }
+    });
+  }
+
+  // User chat interface
   if (path === '/chat') {
     const cookie = request.headers.get('cookie') || '';
     const token = cookie.split('t=')[1]?.split(';')[0];
@@ -89,7 +96,7 @@ export async function setupRoutes(request, env) {
     if (!sess) {
       return Response.redirect(`${url.origin}/app`, 302);
     }
-    return new Response(getChatHTML(), {
+    return new Response(getUserChatHTML(), {
       headers: { 'Content-Type': 'text/html' }
     });
   }
@@ -98,15 +105,18 @@ export async function setupRoutes(request, env) {
   return new Response('Not Found', { status: 404 });
 }
 
-function getChatHTML() {
+function getGuestChatHTML() {
   return `
 <!DOCTYPE html><html lang="en" class="dark"><head><meta charset="UTF-8"><script src="https://cdn.tailwindcss.com"></script></head>
 <body class="bg-[#020617] text-slate-200 min-h-screen flex flex-col">
   <div class="flex-1 flex">
     <div class="w-64 bg-slate-900 border-r border-slate-800 p-4">
       <div class="flex justify-between items-center mb-6">
-        <h2 class="text-xl font-bold text-white">Chat History</h2>
+        <h2 class="text-xl font-bold text-white">Guest Chat</h2>
         <button onclick="newChat()" class="text-brand hover:text-brand/80">New</button>
+      </div>
+      <div class="text-sm text-slate-500 mb-4">
+        Limited to ${CONFIG.guest_limit} messages per session
       </div>
       <div id="chatList" class="space-y-2">
         <!-- Chat history loaded here -->
@@ -115,12 +125,12 @@ function getChatHTML() {
     
     <div class="flex-1 flex flex-col">
       <div class="bg-slate-900 border-b border-slate-800 p-4 flex justify-between items-center">
-        <h1 class="text-xl font-bold text-white">AI Assistant</h1>
-        <button onclick="location.href='/app'" class="text-slate-400 hover:text-white">Dashboard</button>
+        <h1 class="text-xl font-bold text-white">AI Assistant (Guest)</h1>
+        <button onclick="location.href='/' " class="text-slate-400 hover:text-white">Back to Home</button>
       </div>
       
       <div id="chatMessages" class="flex-1 overflow-y-auto p-6 space-y-4">
-        <div class="text-center text-slate-500 py-8">Start a conversation...</div>
+        <div class="text-center text-slate-500 py-8">Start a conversation... (${CONFIG.guest_limit} messages limit)</div>
       </div>
       
       <div class="bg-slate-900 border-t border-slate-800 p-4">
@@ -130,33 +140,30 @@ function getChatHTML() {
                  onkeypress="if(event.key==='Enter') sendMessage()">
           <button onclick="sendMessage()" class="bg-brand px-6 py-3 rounded-xl font-bold hover:bg-brand/90 transition">Send</button>
         </div>
+        <div id="messageCount" class="text-right text-xs text-slate-500 mt-2">
+          Messages: <span id="count">0</span>/${CONFIG.guest_limit}
+        </div>
       </div>
     </div>
   </div>
 
   <script>
     let currentChatId = null;
-    
-    async function loadChatHistory() {
-      const res = await fetch('/api/user/history', { headers: { 'Authorization': localStorage.getItem('t') } });
-      if (res.ok) {
-        const history = await res.json();
-        const list = document.getElementById('chatList');
-        list.innerHTML = history.map(h => \`
-          <div class="p-3 rounded-lg bg-slate-800 hover:bg-slate-700 cursor-pointer" onclick="loadChat('\${h.id}')">
-            <div class="text-sm font-medium text-white">\${h.title}</div>
-            <div class="text-xs text-slate-500">\${new Date(h.date).toLocaleDateString()}</div>
-          </div>
-        \`).join('');
-      }
-    }
+    let messageCount = 0;
     
     function newChat() {
       currentChatId = 'chat_' + Date.now();
-      document.getElementById('chatMessages').innerHTML = '<div class="text-center text-slate-500 py-8">Start a conversation...</div>';
+      document.getElementById('chatMessages').innerHTML = '<div class="text-center text-slate-500 py-8">Start a conversation... (${CONFIG.guest_limit} messages limit)</div>';
+      messageCount = 0;
+      updateMessageCount();
     }
     
     async function sendMessage() {
+      if (messageCount >= ${CONFIG.guest_limit}) {
+        alert('Guest message limit reached. Please register or sign in for unlimited chat.');
+        return;
+      }
+      
       const input = document.getElementById('messageInput');
       const message = input.value.trim();
       if (!message) return;
@@ -171,11 +178,13 @@ function getChatHTML() {
       \`;
       
       input.value = '';
+      messageCount++;
+      updateMessageCount();
       
       try {
-        const res = await fetch('/api/chat', {
+        const res = await fetch('/api/chat/guest', {
           method: 'POST',
-          headers: { 'Authorization': localStorage.getItem('t'), 'Content-Type': 'application/json' },
+          headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ message, chatId: currentChatId })
         });
         
@@ -203,7 +212,170 @@ function getChatHTML() {
       }
     }
     
+    function updateMessageCount() {
+      document.getElementById('count').textContent = messageCount;
+    }
+  </script>
+</body></html>`;
+}
+
+function getUserChatHTML() {
+  return `
+<!DOCTYPE html><html lang="en" class="dark"><head><meta charset="UTF-8"><script src="https://cdn.tailwindcss.com"></script></head>
+<body class="bg-[#020617] text-slate-200 min-h-screen flex flex-col">
+  <div class="flex-1 flex">
+    <div class="w-64 bg-slate-900 border-r border-slate-800 p-4">
+      <div class="flex justify-between items-center mb-6">
+        <h2 class="text-xl font-bold text-white">Chat History</h2>
+        <button onclick="newChat()" class="text-brand hover:text-brand/80">New</button>
+      </div>
+      <div id="chatList" class="space-y-2">
+        <!-- Chat history loaded here -->
+      </div>
+    </div>
+    
+    <div class="flex-1 flex flex-col">
+      <div class="bg-slate-900 border-b border-slate-800 p-4 flex justify-between items-center">
+        <h1 class="text-xl font-bold text-white">AI Assistant</h1>
+        <div class="flex items-center gap-4">
+          <select id="modelSelect" class="bg-slate-800 border border-slate-700 rounded-lg text-white px-3 py-1 text-sm">
+            <!-- Models will be loaded dynamically -->
+          </select>
+          <button onclick="location.href='/app'" class="text-slate-400 hover:text-white">Dashboard</button>
+        </div>
+      </div>
+      
+      <div id="chatMessages" class="flex-1 overflow-y-auto p-6 space-y-4">
+        <div class="text-center text-slate-500 py-8">Start a conversation...</div>
+      </div>
+      
+      <div class="bg-slate-900 border-t border-slate-800 p-4">
+        <div class="flex gap-4">
+          <input id="messageInput" type="text" placeholder="Type your message..." 
+                 class="flex-1 bg-slate-800 border border-slate-700 p-3 rounded-xl text-white focus:border-brand focus:outline-none"
+                 onkeypress="if(event.key==='Enter') sendMessage()">
+          <button onclick="sendMessage()" class="bg-brand px-6 py-3 rounded-xl font-bold hover:bg-brand/90 transition">Send</button>
+        </div>
+        <div id="creditsInfo" class="text-right text-xs text-slate-500 mt-2">
+          Credits: <span id="credits">0</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let currentChatId = null;
+    let currentModel = '${CONFIG.default_models.user[0]}';
+    
+    async function loadChatHistory() {
+      const res = await fetch('/api/user/history', { headers: { 'Authorization': localStorage.getItem('t') } });
+      if (res.ok) {
+        const history = await res.json();
+        const list = document.getElementById('chatList');
+        list.innerHTML = history.map(h => \`
+          <div class="p-3 rounded-lg bg-slate-800 hover:bg-slate-700 cursor-pointer" onclick="loadChat('\${h.id}')">
+            <div class="text-sm font-medium text-white">\${h.title}</div>
+            <div class="text-xs text-slate-500">\${new Date(h.date).toLocaleDateString()}</div>
+          </div>
+        \`).join('');
+      }
+    }
+    
+    async function loadModels() {
+      const res = await fetch('/api/user/models', { headers: { 'Authorization': localStorage.getItem('t') } });
+      if (res.ok) {
+        const models = await res.json();
+        const select = document.getElementById('modelSelect');
+        select.innerHTML = models.map(m => \`<option value="\${m.id}">\${m.name}</option>\`).join('');
+        select.addEventListener('change', (e) => {
+          currentModel = e.target.value;
+        });
+      }
+    }
+    
+    async function loadCredits() {
+      const res = await fetch('/api/user/stats', { headers: { 'Authorization': localStorage.getItem('t') } });
+      if (res.ok) {
+        const stats = await res.json();
+        document.getElementById('credits').textContent = stats.totalCredits;
+      }
+    }
+    
+    function newChat() {
+      currentChatId = 'chat_' + Date.now();
+      document.getElementById('chatMessages').innerHTML = '<div class="text-center text-slate-500 py-8">Start a conversation...</div>';
+    }
+    
+    async function loadChat(chatId) {
+      currentChatId = chatId;
+      const res = await fetch('/api/user/chat/' + chatId, { headers: { 'Authorization': localStorage.getItem('t') } });
+      if (res.ok) {
+        const chat = await res.json();
+        const messagesDiv = document.getElementById('chatMessages');
+        messagesDiv.innerHTML = chat.messages.map(msg => \`
+          <div class="flex justify-\${msg.role === 'user' ? 'end' : 'start'}">
+            <div class="\${msg.role === 'user' ? 'bg-brand' : 'bg-slate-800'} p-4 rounded-2xl max-w-md text-white">\${msg.content}</div>
+          </div>
+        \`).join('');
+        messagesDiv.scrollTop = messagesDiv.scrollHeight;
+      }
+    }
+    
+    async function sendMessage() {
+      const input = document.getElementById('messageInput');
+      const message = input.value.trim();
+      if (!message) return;
+      
+      if (!currentChatId) newChat();
+      
+      const messagesDiv = document.getElementById('chatMessages');
+      messagesDiv.innerHTML += \`
+        <div class="flex justify-end">
+          <div class="bg-brand p-4 rounded-2xl max-w-md text-white">\${message}</div>
+        </div>
+      \`;
+      
+      input.value = '';
+      
+      try {
+        const res = await fetch('/api/chat', {
+          method: 'POST',
+          headers: { 'Authorization': localStorage.getItem('t'), 'Content-Type': 'application/json' },
+          body: JSON.stringify({ 
+            message, 
+            chatId: currentChatId,
+            model: currentModel
+          })
+        });
+        
+        const data = await res.json();
+        if (data.ok) {
+          messagesDiv.innerHTML += \`
+            <div class="flex justify-start">
+              <div class="bg-slate-800 p-4 rounded-2xl max-w-md text-white">\${data.response}</div>
+            </div>
+          \`;
+          await loadCredits();
+        } else {
+          messagesDiv.innerHTML += \`
+            <div class="flex justify-start">
+              <div class="bg-red-900 p-4 rounded-2xl max-w-md text-white">Error: \${data.err}</div>
+            </div>
+          \`;
+        }
+        messagesDiv.scrollTop = messagesDiv.scrollHeight;
+      } catch (error) {
+        messagesDiv.innerHTML += \`
+          <div class="flex justify-start">
+            <div class="bg-red-900 p-4 rounded-2xl max-w-md text-white">Connection error</div>
+          </div>
+        \`;
+      }
+    }
+    
     loadChatHistory();
+    loadModels();
+    loadCredits();
   </script>
 </body></html>`;
 }

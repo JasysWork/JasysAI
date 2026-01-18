@@ -194,11 +194,31 @@ User Request → Router → Authentication → Business Logic → Database → R
 - **Scalability**: Automatic scaling based on demand
 - **Security**: Built-in DDoS protection
 
-### Database Services
-- **D1**: SQLite-compatible relational database
-- **KV**: Key-value storage for caching
-- **R2**: S3-compatible object storage
-- **Durable Objects**: Real-time collaboration features
+### Database Services (KV Storage)
+- **JASYSAI_KV**: Primary storage for all application data
+- **User Data**: User profiles, API keys, credits, usage tracking
+- **Chat History**: User chat conversations and messages
+- **Sessions**: User and admin session management
+- **Logs**: Usage logs and activity tracking
+- **Content**: Static page content and settings
+
+### KV Storage Structure
+```javascript
+// User data
+'u:{email}': { email, name, credits, api_keys, usage_daily, total_used, unlocked_models }
+
+// Chat history
+'chat:{email}': [ { id, title, created, messages: [ { role, content, timestamp } ] } ]
+
+// API keys
+Stored in user data object
+
+// Usage logs
+'log:{timestamp}:{email}': { email, model, cost, time }
+
+// Guest sessions
+'guest:{hostname}:{userAgent}': { messageCount, chats }
+```
 
 ## 📈 Monitoring & Analytics
 

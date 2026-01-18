@@ -90,4 +90,32 @@ export class UserController {
       unlockedModelsCount: user.unlocked_models?.length || 0
     };
   }
+
+  static async getChat(env, email, chatId) {
+    const history = await DB.get(env, `chat:${email}`) || [];
+    return history.find(h => h.id === chatId);
+  }
+
+  static async getAvailableModels(env, email) {
+    const user = await DB.get(env, `u:${email}`);
+    if (!user) return [];
+    
+    const availableModels = new Set([
+      ...CONFIG.default_models.user,
+      ...(user.unlocked_models || [])
+    ]);
+    
+    try {
+      const res = await fetch('https://openrouter.ai/api/v1/models');
+      const data = await res.json();
+      return data.data.filter(m => availableModels.has(m.id)).map(m => ({
+        id: m.id,
+        name: m.name,
+        description: m.description
+      }));
+    } catch (error) {
+      console.error('Error fetching model details:', error);
+      return [];
+    }
+  }
 }
