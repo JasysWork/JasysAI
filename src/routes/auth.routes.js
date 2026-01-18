@@ -14,21 +14,6 @@ export async function authRoutes(request, env) {
     });
   }
 
-  // Login page
-  if (path === '/app') {
-    const cookie = request.headers.get('cookie') || '';
-    const token = cookie.split('t=')[1]?.split(';')[0];
-    if (token) {
-      const sess = await DB.get(env, `sess:${token}`);
-      if (sess && sess.role === 'user') {
-        return Response.redirect(`${url.origin}/app/dashboard`, 302);
-      }
-    }
-    return new Response(LoginPage(), {
-      headers: { 'Content-Type': 'text/html' }
-    });
-  }
-
   // Register page
   if (path === '/auth/register') {
     return new Response(RegisterPage(), {
