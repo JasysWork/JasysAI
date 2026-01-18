@@ -149,6 +149,29 @@ src/
 - **Separate Authentication**: User and admin login flows completely separated
 - **Clean URLs**: Landing page at root (`/`), login at `/app`
 
+## 📝 Content Management System
+
+### Dynamic Content Pages
+- **About Page**: `/about` - Company information and mission
+- **Blog Page**: `/blog` - Latest news and updates
+- **Contact Page**: `/contact` - Contact information and form
+- **Privacy Policy**: `/privacy-policy` - Data protection policies
+- **Terms of Service**: `/terms-of-service` - Service terms and conditions
+- **Security Page**: `/security` - Security measures and practices
+
+### Admin Content Management
+- **Content Editor**: Rich text editor for page content
+- **Real-time Updates**: Instant content updates without deployment
+- **Version Tracking**: Track last updated timestamps
+- **Preview Mode**: Preview changes before publishing
+- **Export/Import**: Backup and restore content functionality
+
+### Database Storage
+- **Cloudflare D1**: Content stored in D1 database for persistence
+- **Key-Value Structure**: Simple content storage with metadata
+- **Admin Access**: Secure admin authentication for content updates
+- **Automatic Caching**: Optimized content delivery
+
 ## 🛠️ Development
 
 ### Environment Setup

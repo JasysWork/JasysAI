@@ -27,7 +27,14 @@ export function AdminApp(data) {
 </head>
 <body>
     <div class="header">
-        <h1>Admin Dashboard</h1>
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <h1>Admin Dashboard</h1>
+            <nav style="display: flex; gap: 1rem;">
+                <a href="/admin/dashboard" style="color: #1e293b; text-decoration: none; padding: 0.5rem 1rem; border-radius: 4px; background: #f1f5f9;">Dashboard</a>
+                <a href="/admin/content" style="color: #64748b; text-decoration: none; padding: 0.5rem 1rem; border-radius: 4px;">Content</a>
+                <a href="/admin" style="color: #dc2626; text-decoration: none; padding: 0.5rem 1rem; border-radius: 4px;">Logout</a>
+            </nav>
+        </div>
     </div>
     
     <div class="container">
@@ -39,6 +46,16 @@ export function AdminApp(data) {
             <div class="stat-card">
                 <h3>Recent Activity</h3>
                 <div class="value">${data.logs?.length || 0}</div>
+            </div>
+            <div class="stat-card">
+                <h3>Content Pages</h3>
+                <div class="value">6</div>
+            </div>
+            <div class="stat-card">
+                <h3>Quick Actions</h3>
+                <div style="margin-top: 0.5rem;">
+                    <a href="/admin/content" style="display: inline-block; background: #3b82f6; color: white; padding: 0.5rem 1rem; border-radius: 4px; text-decoration: none; margin-right: 0.5rem;">Manage Content</a>
+                </div>
             </div>
         </div>
         

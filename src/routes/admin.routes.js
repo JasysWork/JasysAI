@@ -1,6 +1,8 @@
 import { DB } from '../db/index.js';
 import { AdminApp } from '../dashboard/admin/admin.pages.js';
 import { AdminController } from '../dashboard/admin/admin.controller.js';
+import { ContentController } from '../dashboard/admin/content.controller.js';
+import { ContentManagementPage } from '../dashboard/admin/content.pages.js';
 
 export async function adminRoutes(request, env) {
   const url = new URL(request.url);

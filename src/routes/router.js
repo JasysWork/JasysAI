@@ -1,5 +1,6 @@
 import { DB } from '../db/index.js';
 import { AuthService } from '../auth/auth.service.js';
+import { ContentPage } from '../utils/content.pages.js';
 import { authRoutes } from './auth.routes.js';
 import { adminRoutes } from './admin.routes.js';
 import { userRoutes } from './user.routes.js';
@@ -25,6 +26,14 @@ export async function setupRoutes(request, env) {
   // Static assets
   if (path.startsWith('/assets/')) {
     return new Response('Asset not found', { status: 404 });
+  }
+
+  // Content pages
+  if (path === '/about' || path === '/blog' || path === '/contact' ||
+      path === '/privacy-policy' || path === '/terms-of-service' || path === '/security') {
+    const pageKey = path.replace('/', '').replace('-', '_');
+    const html = await ContentPage(env, pageKey);
+    return new Response(html, { headers: { 'Content-Type': 'text/html' } });
   }
 
   // Authentication routes
