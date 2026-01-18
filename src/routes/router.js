@@ -28,7 +28,7 @@ export async function setupRoutes(request, env) {
   }
 
   // Authentication routes
-  if (path.startsWith('/auth/') || path === '/app' || path === '/') {
+  if (path.startsWith('/auth/') || path === '/') {
     return authRoutes(request, env);
   }
 
