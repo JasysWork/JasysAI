@@ -101,15 +101,21 @@ src/
 - **Dependency Injection**: Clean dependencies between modules
 - **Index Files**: Clean exports for easy importing
 
+### Landing Page System
+- **Interactive Landing Page**: Modern, responsive design with Tailwind CSS
+- **Feature Showcase**: Highlights AI capabilities and pricing
+- **Call-to-Action**: Clear user registration and login flows
+- **Security Focused**: No admin portal links exposed to users
+
 ### Authentication System
 - User registration and login
-- Admin authentication
+- Admin authentication (separate portal)
 - Session management
 - API key authentication
 
 ### Dashboard System
 - **User Dashboard**: Credit management, API keys, chat history
-- **Admin Dashboard**: User management, system settings, usage analytics
+- **Admin Dashboard**: User management, system settings, usage analytics (secure access)
 
 ### API Layer
 - OpenAI-compatible API endpoints
@@ -122,6 +128,26 @@ src/
 - Usage tracking and billing
 - Session management
 - Data persistence
+
+## 🎨 Landing Page Features
+
+### Modern Design
+- **Responsive Layout**: Built with Tailwind CSS for mobile-first design
+- **Interactive Elements**: Smooth animations and hover effects
+- **Dark Theme**: Professional dark color scheme with gradient backgrounds
+- **Navigation**: Sticky header with mobile menu support
+
+### Content Sections
+- **Hero Section**: Eye-catching headline with call-to-action buttons
+- **Features Grid**: Showcase of platform capabilities with icons
+- **Pricing Plans**: Transparent pricing with highlighted popular plan
+- **API Documentation**: Quick start example and integration guide
+- **Footer**: Complete site navigation and legal links
+
+### Security Features
+- **No Admin Links**: Admin portal access removed from user-facing pages
+- **Separate Authentication**: User and admin login flows completely separated
+- **Clean URLs**: Landing page at root (`/`), login at `/app`
 
 ## 🛠️ Development
 
@@ -151,12 +177,12 @@ src/
 
 ### Authentication (`src/auth/`)
 - `auth.service.js`: User/admin authentication, session management, registration
-- `auth.pages.js`: Login, register, and admin login UI components
+- `auth.pages.js`: Landing page, login, register, and admin login UI components
 - `index.js`: Authentication module exports
 
 ### Routes (`src/routes/`)
 - `router.js`: Main request router with route resolution logic
-- `auth.routes.js`: User authentication routes (`/auth/login`, `/auth/register`)
+- `auth.routes.js`: User authentication routes (`/`, `/app`, `/auth/login`, `/auth/register`)
 - `admin.routes.js`: Admin routes (`/admin`, `/admin/login`, `/admin/dashboard`, `/api/admin/*`)
 - `user.routes.js`: User dashboard routes (`/app`, `/app/dashboard`)
 - `api.routes.js`: API endpoints (`/api/chat`, `/api/user/*`, `/api/*`)

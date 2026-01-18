@@ -7,8 +7,16 @@ export async function authRoutes(request, env) {
   const path = url.pathname;
   const method = request.method;
 
+  // Landing page
+  if (path === '/') {
+    const { LandingPage } = await import('../auth/auth.pages.js');
+    return new Response(LandingPage(), {
+      headers: { 'Content-Type': 'text/html' }
+    });
+  }
+
   // Login page
-  if (path === '/app' || path === '/') {
+  if (path === '/app') {
     const cookie = request.headers.get('cookie') || '';
     const token = cookie.split('t=')[1]?.split(';')[0];
     if (token) {

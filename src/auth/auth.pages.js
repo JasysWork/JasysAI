@@ -1,6 +1,432 @@
 import { CONFIG } from '../config/index.js';
 import { LOGO_SVG } from '../utils/assets.js';
 
+export const LandingPage = () => `
+<!DOCTYPE html><html lang="en" class="dark"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><script src="https://cdn.tailwindcss.com"></script></head>
+<body class="bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 text-white min-h-screen">
+  <!-- Navigation -->
+  <nav class="fixed top-0 w-full bg-slate-900/80 backdrop-blur-md border-b border-slate-800/50 z-50">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+      <div class="flex items-center gap-3 font-bold text-2xl">
+        ${LOGO_SVG} ${CONFIG.site_name}
+      </div>
+      <div class="hidden md:flex items-center gap-6">
+        <a href="#features" class="text-slate-300 hover:text-white transition">Features</a>
+        <a href="#pricing" class="text-slate-300 hover:text-white transition">Pricing</a>
+        <a href="#api" class="text-slate-300 hover:text-white transition">API</a>
+        <button onclick="showLogin()" class="bg-brand px-6 py-2 rounded-full font-bold hover:bg-brand/90 transition">Sign In</button>
+        <button onclick="showRegister()" class="bg-slate-800 px-6 py-2 rounded-full font-bold hover:bg-slate-700 transition">Get Started</button>
+      </div>
+      <button onclick="toggleMobileMenu()" class="md:hidden text-white">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+        </svg>
+      </button>
+    </div>
+    <!-- Mobile Menu -->
+    <div id="mobileMenu" class="hidden md:hidden bg-slate-900/95 backdrop-blur-md border-t border-slate-800/50">
+      <div class="px-6 py-4 space-y-3">
+        <a href="#features" class="block text-slate-300 hover:text-white transition">Features</a>
+        <a href="#pricing" class="block text-slate-300 hover:text-white transition">Pricing</a>
+        <a href="#api" class="block text-slate-300 hover:text-white transition">API</a>
+        <button onclick="showLogin()" class="w-full bg-brand px-6 py-2 rounded-full font-bold hover:bg-brand/90 transition">Sign In</button>
+        <button onclick="showRegister()" class="w-full bg-slate-800 px-6 py-2 rounded-full font-bold hover:bg-slate-700 transition">Get Started</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="pt-32 pb-20 px-6">
+    <div class="max-w-7xl mx-auto text-center">
+      <div class="mb-8">
+        <div class="inline-flex items-center gap-2 bg-slate-800/50 backdrop-blur-sm border border-slate-700 rounded-full px-4 py-2 text-sm text-slate-300 mb-6">
+          <span class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
+          AI Gateway Platform - Now Live
+        </div>
+        <h1 class="text-5xl md:text-7xl font-black mb-6 bg-gradient-to-r from-white to-purple-400 bg-clip-text text-transparent">
+          Unlock the Power of AI
+        </h1>
+        <p class="text-xl md:text-2xl text-slate-300 mb-8 max-w-3xl mx-auto leading-relaxed">
+          Access premium AI models through a single, unified API.
+          Pay-as-you-go pricing with transparent costs and enterprise-grade security.
+        </p>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center mb-12">
+          <button onclick="showRegister()" class="bg-brand text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-brand/90 transition transform hover:scale-105 shadow-lg shadow-brand/25">
+            Start Free Trial
+          </button>
+          <button onclick="scrollToSection('api')" class="bg-slate-800 text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-slate-700 transition transform hover:scale-105">
+            View Documentation
+          </button>
+        </div>
+      </div>
+      
+      <!-- Stats -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
+        <div class="bg-slate-800/30 backdrop-blur-sm border border-slate-700 rounded-2xl p-6">
+          <div class="text-3xl font-black text-brand mb-2">10+</div>
+          <div class="text-slate-400">Premium AI Models</div>
+        </div>
+        <div class="bg-slate-800/30 backdrop-blur-sm border border-slate-700 rounded-2xl p-6">
+          <div class="text-3xl font-black text-green-400 mb-2">99.9%</div>
+          <div class="text-slate-400">Uptime SLA</div>
+        </div>
+        <div class="bg-slate-800/30 backdrop-blur-sm border border-slate-700 rounded-2xl p-6">
+          <div class="text-3xl font-black text-purple-400 mb-2">24/7</div>
+          <div class="text-slate-400">API Support</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section id="features" class="py-20 px-6 bg-slate-900/50">
+    <div class="max-w-7xl mx-auto">
+      <div class="text-center mb-16">
+        <h2 class="text-4xl md:text-5xl font-black mb-4">Why Choose ${CONFIG.site_name}?</h2>
+        <p class="text-xl text-slate-300 max-w-2xl mx-auto">
+          Enterprise-grade AI infrastructure with developer-friendly APIs
+        </p>
+      </div>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div class="bg-slate-800/30 backdrop-blur-sm border border-slate-700 rounded-2xl p-8 hover:border-brand/50 transition group">
+          <div class="w-12 h-12 bg-brand/20 rounded-xl flex items-center justify-center mb-6 group-hover:bg-brand/30 transition">
+            <svg class="w-6 h-6 text-brand" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+            </svg>
+          </div>
+          <h3 class="text-xl font-bold text-white mb-3">Lightning Fast</h3>
+          <p class="text-slate-400">Optimized infrastructure with sub-second response times for real-time AI interactions.</p>
+        </div>
+        
+        <div class="bg-slate-800/30 backdrop-blur-sm border border-slate-700 rounded-2xl p-8 hover:border-brand/50 transition group">
+          <div class="w-12 h-12 bg-green-500/20 rounded-xl flex items-center justify-center mb-6 group-hover:bg-green-500/30 transition">
+            <svg class="w-6 h-6 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+            </svg>
+          </div>
+          <h3 class="text-xl font-bold text-white mb-3">Secure & Private</h3>
+          <p class="text-slate-400">Enterprise-grade security with end-to-end encryption and GDPR compliance.</p>
+        </div>
+        
+        <div class="bg-slate-800/30 backdrop-blur-sm border border-slate-700 rounded-2xl p-8 hover:border-brand/50 transition group">
+          <div class="w-12 h-12 bg-purple-500/20 rounded-xl flex items-center justify-center mb-6 group-hover:bg-purple-500/30 transition">
+            <svg class="w-6 h-6 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+          </div>
+          <h3 class="text-xl font-bold text-white mb-3">Transparent Pricing</h3>
+          <p class="text-slate-400">Pay-as-you-go model with no hidden fees. Only pay for what you use.</p>
+        </div>
+        
+        <div class="bg-slate-800/30 backdrop-blur-sm border border-slate-700 rounded-2xl p-8 hover:border-brand/50 transition group">
+          <div class="w-12 h-12 bg-blue-500/20 rounded-xl flex items-center justify-center mb-6 group-hover:bg-blue-500/30 transition">
+            <svg class="w-6 h-6 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+            </svg>
+          </div>
+          <h3 class="text-xl font-bold text-white mb-3">OpenAI Compatible</h3>
+          <p class="text-slate-400">Drop-in replacement for OpenAI API with minimal code changes required.</p>
+        </div>
+        
+        <div class="bg-slate-800/30 backdrop-blur-sm border border-slate-700 rounded-2xl p-8 hover:border-brand/50 transition group">
+          <div class="w-12 h-12 bg-yellow-500/20 rounded-xl flex items-center justify-center mb-6 group-hover:bg-yellow-500/30 transition">
+            <svg class="w-6 h-6 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
+            </svg>
+          </div>
+          <h3 class="text-xl font-bold text-white mb-3">Analytics Dashboard</h3>
+          <p class="text-slate-400">Real-time usage analytics and cost tracking to optimize your AI spending.</p>
+        </div>
+        
+        <div class="bg-slate-800/30 backdrop-blur-sm border border-slate-700 rounded-2xl p-8 hover:border-brand/50 transition group">
+          <div class="w-12 h-12 bg-red-500/20 rounded-xl flex items-center justify-center mb-6 group-hover:bg-red-500/30 transition">
+            <svg class="w-6 h-6 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+            </svg>
+          </div>
+          <h3 class="text-xl font-bold text-white mb-3">Developer First</h3>
+          <p class="text-slate-400">Comprehensive documentation, SDKs, and dedicated developer support.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pricing Section -->
+  <section id="pricing" class="py-20 px-6">
+    <div class="max-w-7xl mx-auto">
+      <div class="text-center mb-16">
+        <h2 class="text-4xl md:text-5xl font-black mb-4">Simple, Transparent Pricing</h2>
+        <p class="text-xl text-slate-300 max-w-2xl mx-auto">
+          Choose the perfect plan for your needs. No hidden fees, cancel anytime.
+        </p>
+      </div>
+      
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+        <div class="bg-slate-800/30 backdrop-blur-sm border border-slate-700 rounded-2xl p-8 hover:border-slate-600 transition">
+          <h3 class="text-xl font-bold text-white mb-2">Starter</h3>
+          <div class="text-3xl font-black text-white mb-4">Rp 50K<span class="text-lg font-normal text-slate-400">/month</span></div>
+          <ul class="space-y-3 mb-8">
+            <li class="flex items-center gap-2 text-slate-300">
+              <svg class="w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+              </svg>
+              Basic AI Models
+            </li>
+            <li class="flex items-center gap-2 text-slate-300">
+              <svg class="w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+              </svg>
+              100K tokens/month
+            </li>
+            <li class="flex items-center gap-2 text-slate-300">
+              <svg class="w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+              </svg>
+              Email support
+            </li>
+          </ul>
+          <button onclick="showRegister()" class="w-full bg-slate-700 text-white px-6 py-3 rounded-xl font-bold hover:bg-slate-600 transition">
+            Get Started
+          </button>
+        </div>
+        
+        <div class="bg-gradient-to-br from-brand/20 to-purple-500/20 backdrop-blur-sm border border-brand/50 rounded-2xl p-8 hover:border-brand transition transform scale-105">
+          <div class="bg-brand text-white text-sm font-bold px-3 py-1 rounded-full inline-block mb-4">POPULAR</div>
+          <h3 class="text-xl font-bold text-white mb-2">Professional</h3>
+          <div class="text-3xl font-black text-white mb-4">Rp 200K<span class="text-lg font-normal text-slate-400">/month</span></div>
+          <ul class="space-y-3 mb-8">
+            <li class="flex items-center gap-2 text-slate-300">
+              <svg class="w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+              </svg>
+              Advanced AI Models
+            </li>
+            <li class="flex items-center gap-2 text-slate-300">
+              <svg class="w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+              </svg>
+              500K tokens/month
+            </li>
+            <li class="flex items-center gap-2 text-slate-300">
+              <svg class="w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+              </svg>
+              Priority support
+            </li>
+            <li class="flex items-center gap-2 text-slate-300">
+              <svg class="w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+              </svg>
+              Custom integrations
+            </li>
+          </ul>
+          <button onclick="showRegister()" class="w-full bg-brand text-white px-6 py-3 rounded-xl font-bold hover:bg-brand/90 transition">
+            Get Started
+          </button>
+        </div>
+        
+        <div class="bg-slate-800/30 backdrop-blur-sm border border-slate-700 rounded-2xl p-8 hover:border-slate-600 transition">
+          <h3 class="text-xl font-bold text-white mb-2">Enterprise</h3>
+          <div class="text-3xl font-black text-white mb-4">Custom</div>
+          <ul class="space-y-3 mb-8">
+            <li class="flex items-center gap-2 text-slate-300">
+              <svg class="w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+              </svg>
+              All AI Models
+            </li>
+            <li class="flex items-center gap-2 text-slate-300">
+              <svg class="w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+              </svg>
+              Unlimited tokens
+            </li>
+            <li class="flex items-center gap-2 text-slate-300">
+              <svg class="w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+              </svg>
+              Dedicated support
+            </li>
+            <li class="flex items-center gap-2 text-slate-300">
+              <svg class="w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+              </svg>
+              SLA guarantee
+            </li>
+          </ul>
+          <button onclick="contactSales()" class="w-full bg-slate-700 text-white px-6 py-3 rounded-xl font-bold hover:bg-slate-600 transition">
+            Contact Sales
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- API Section -->
+  <section id="api" class="py-20 px-6 bg-slate-900/50">
+    <div class="max-w-7xl mx-auto">
+      <div class="text-center mb-16">
+        <h2 class="text-4xl md:text-5xl font-black mb-4">Simple Integration</h2>
+        <p class="text-xl text-slate-300 max-w-2xl mx-auto">
+          Get started in minutes with our OpenAI-compatible API
+        </p>
+      </div>
+      
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+        <div>
+          <h3 class="text-2xl font-bold text-white mb-6">Quick Start Example</h3>
+          <div class="bg-black/50 border border-slate-700 rounded-2xl p-6 font-mono text-sm">
+            <div class="text-slate-400 mb-4"># Install the OpenAI package</div>
+            <div class="text-green-400 mb-6">pip install openai</div>
+            
+            <div class="text-slate-400 mb-4"># Use with our API</div>
+            <div class="text-blue-400 mb-2">from openai import OpenAI</div>
+            <div class="text-blue-400 mb-2">client = OpenAI(</div>
+            <div class="text-blue-400 ml-4">api_key="your-api-key",</div>
+            <div class="text-blue-400 ml-4">base_url="${CONFIG.site_url}/v1"</div>
+            <div class="text-blue-400">)</div>
+            <div class="text-white mt-4">response = client.chat.completions.create(</div>
+            <div class="text-white ml-4">model="gpt-4",</div>
+            <div class="text-white ml-4">messages=[{"role": "user", "content": "Hello!"}]</div>
+            <div class="text-white">)</div>
+          </div>
+        </div>
+        
+        <div class="space-y-6">
+          <div class="bg-slate-800/30 backdrop-blur-sm border border-slate-700 rounded-2xl p-6">
+            <h4 class="text-lg font-bold text-white mb-3">🚀 Easy Migration</h4>
+            <p class="text-slate-400">Switch from OpenAI in minutes - just change the base URL and API key.</p>
+          </div>
+          
+          <div class="bg-slate-800/30 backdrop-blur-sm border border-slate-700 rounded-2xl p-6">
+            <h4 class="text-lg font-bold text-white mb-3">📚 Comprehensive Docs</h4>
+            <p class="text-slate-400">Detailed documentation with examples for all programming languages.</p>
+          </div>
+          
+          <div class="bg-slate-800/30 backdrop-blur-sm border border-slate-700 rounded-2xl p-6">
+            <h4 class="text-lg font-bold text-white mb-3">🔧 SDK Support</h4>
+            <p class="text-slate-400">Official SDKs for Python, JavaScript, Go, and more.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="py-20 px-6">
+    <div class="max-w-4xl mx-auto text-center">
+      <div class="bg-gradient-to-r from-brand/20 to-purple-500/20 backdrop-blur-sm border border-brand/50 rounded-3xl p-12">
+        <h2 class="text-4xl font-black mb-4">Ready to Get Started?</h2>
+        <p class="text-xl text-slate-300 mb-8">
+          Join thousands of developers using ${CONFIG.site_name} to build amazing AI applications.
+        </p>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+          <button onclick="showRegister()" class="bg-brand text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-brand/90 transition transform hover:scale-105 shadow-lg shadow-brand/25">
+            Start Free Trial
+          </button>
+          <button onclick="showLogin()" class="bg-slate-800 text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-slate-700 transition">
+            Sign In
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-slate-900/80 backdrop-blur-sm border-t border-slate-800/50 py-12 px-6">
+    <div class="max-w-7xl mx-auto">
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+        <div>
+          <div class="flex items-center gap-3 font-bold text-xl text-white mb-4">
+            ${LOGO_SVG} ${CONFIG.site_name}
+          </div>
+          <p class="text-slate-400 text-sm">
+            Your gateway to powerful AI models with simple, transparent pricing.
+          </p>
+        </div>
+        
+        <div>
+          <h4 class="font-bold text-white mb-4">Product</h4>
+          <ul class="space-y-2 text-slate-400 text-sm">
+            <li><a href="#features" class="hover:text-white transition">Features</a></li>
+            <li><a href="#pricing" class="hover:text-white transition">Pricing</a></li>
+            <li><a href="#api" class="hover:text-white transition">API Docs</a></li>
+          </ul>
+        </div>
+        
+        <div>
+          <h4 class="font-bold text-white mb-4">Company</h4>
+          <ul class="space-y-2 text-slate-400 text-sm">
+            <li><a href="#" class="hover:text-white transition">About</a></li>
+            <li><a href="#" class="hover:text-white transition">Blog</a></li>
+            <li><a href="#" class="hover:text-white transition">Contact</a></li>
+          </ul>
+        </div>
+        
+        <div>
+          <h4 class="font-bold text-white mb-4">Legal</h4>
+          <ul class="space-y-2 text-slate-400 text-sm">
+            <li><a href="#" class="hover:text-white transition">Privacy Policy</a></li>
+            <li><a href="#" class="hover:text-white transition">Terms of Service</a></li>
+            <li><a href="#" class="hover:text-white transition">Security</a></li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="border-t border-slate-800/50 pt-8 text-center text-slate-400 text-sm">
+        <p>&copy; 2026 ${CONFIG.site_name}. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    function toggleMobileMenu() {
+      const menu = document.getElementById('mobileMenu');
+      menu.classList.toggle('hidden');
+    }
+    
+    function scrollToSection(sectionId) {
+      document.getElementById(sectionId).scrollIntoView({ behavior: 'smooth' });
+    }
+    
+    function showLogin() {
+      location.href = '/app';
+    }
+    
+    function showRegister() {
+      location.href = '/auth/register';
+    }
+    
+    function contactSales() {
+      alert('Please contact our sales team at sales@' + window.location.hostname);
+    }
+    
+    // Smooth scroll for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({ behavior: 'smooth' });
+        }
+      });
+    });
+    
+    // Add scroll effect to navigation
+    window.addEventListener('scroll', function() {
+      const nav = document.querySelector('nav');
+      if (window.scrollY > 50) {
+        nav.classList.add('bg-slate-900/95');
+        nav.classList.remove('bg-slate-900/80');
+      } else {
+        nav.classList.add('bg-slate-900/80');
+        nav.classList.remove('bg-slate-900/95');
+      }
+    });
+  </script>
+</body></html>`;
+
 export const UserApp = (user) => `
 <!DOCTYPE html><html lang="en" class="dark"><head><meta charset="UTF-8"><script src="https://cdn.tailwindcss.com"></script></head>
 <body class="bg-[#020617] text-slate-200 min-h-screen p-8">
@@ -325,9 +751,6 @@ export const LoginPage = () => `
       </form>
     </div>
     
-    <div class="text-center mt-6">
-      <a href="/admin" class="text-slate-500 text-sm hover:text-slate-400 transition">Admin Portal →</a>
-    </div>
   </div>
 
   <script>
@@ -407,9 +830,6 @@ export const RegisterPage = () => `
       </form>
     </div>
     
-    <div class="text-center mt-6">
-      <a href="/admin" class="text-slate-500 text-sm hover:text-slate-400 transition">Admin Portal →</a>
-    </div>
   </div>
 
   <script>
