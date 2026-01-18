@@ -1,0 +1,51 @@
+{
+  "name": "jasysai",
+  "version": "1.0.0",
+  "description": "JasyAI - Structured AI Gateway Application",
+  "main": "src/index.js",
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "deploy:staging": "wrangler deploy --env staging",
+    "deploy:production": "wrangler deploy --env production",
+    "build": "echo 'Build completed - No build step required for Workers'",
+    "test": "echo 'No tests specified yet' && exit 0",
+    "lint": "echo 'No linting configured yet' && exit 0",
+    "format": "echo 'No formatter configured yet' && exit 0",
+    "tail:logs": "wrangler tail",
+    "kv:list": "wrangler kv:key list --namespace-id=your-kv-id",
+    "kv:get": "wrangler kv:key get --namespace-id=your-kv-id",
+    "kv:put": "wrangler kv:key put --namespace-id=your-kv-id",
+    "secret:list": "wrangler secret list",
+    "secret:put": "wrangler secret put",
+    "db:migrate": "wrangler d1 migrations apply",
+    "db:execute": "wrangler d1 execute"
+  },
+  "keywords": [
+    "cloudflare-workers",
+    "ai-gateway",
+    "openrouter",
+    "chat-api",
+    "serverless",
+    "javascript"
+  ],
+  "author": "JasyAI Team",
+  "license": "MIT",
+  "devDependencies": {
+    "wrangler": "^3.0.0",
+    "@cloudflare/workers-types": "^4.0.0"
+  },
+  "dependencies": {},
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-username/jasysai.git"
+  },
+  "bugs": {
+    "url": "https://github.com/your-username/jasysai/issues"
+  },
+  "homepage": "https://github.com/your-username/jasysai#readme"
+}

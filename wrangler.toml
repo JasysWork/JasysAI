@@ -1,0 +1,87 @@
+name = "jasysai"
+main = "src/index.js"
+compatibility_date = "2024-01-01"
+compatibility_flags = ["nodejs_compat"]
+
+# Environment configurations
+[env.production]
+name = "jasysai"
+routes = [
+  { pattern = "your-domain.com/*", zone_name = "your-domain.com" }
+]
+
+[env.staging]
+name = "jasysai-staging"
+routes = [
+  { pattern = "staging.your-domain.com/*", zone_name = "your-domain.com" }
+]
+
+# KV Namespaces
+[[kv_namespaces]]
+binding = "JASYSAI_KV"
+id = "your-production-kv-id"
+preview_id = "your-preview-kv-id"
+
+[[env.staging.kv_namespaces]]
+binding = "JASYSAI_KV"
+id = "your-staging-kv-id"
+
+# D1 Database (if needed)
+[[d1_databases]]
+binding = "JASYSAI_DB"
+database_name = "jasysai-db"
+database_id = "your-d1-db-id"
+
+[[env.staging.d1_databases]]
+binding = "JASYSAI_DB"
+database_name = "jasysai-staging-db"
+database_id = "your-staging-d1-db-id"
+
+# Environment Variables
+[vars]
+ENVIRONMENT = "production"
+SITE_NAME = "JasyAI"
+SITE_URL = "https://your-domain.com"
+
+[env.staging.vars]
+ENVIRONMENT = "staging"
+SITE_NAME = "JasyAI (Staging)"
+SITE_URL = "https://staging.your-domain.com"
+
+# Secrets (set via: wrangler secret put <KEY>)
+# Required secrets:
+# - OPENROUTER_KEY
+# - ADMIN_USER
+# - ADMIN_PASS
+# - JWT_SECRET
+
+# Limits and Configuration
+[limits]
+cpu_ms = 50000
+
+# Build configuration
+[build]
+command = "npm run build"
+
+# Assets configuration
+[assets]
+directory = "./public"
+binding = "ASSETS"
+
+# Scheduled tasks
+[[triggers]]
+crons = ["0 2 * * *"]  # Daily at 2 AM UTC
+
+# Analytics Engine (optional)
+[[analytics_engine_datasets]]
+binding = "JASYSAI_ANALYTICS"
+
+# Queue consumers (optional)
+[[queues.producers]]
+binding = "JASYSAI_QUEUE"
+queue = "jasysai-queue"
+
+[[queues.consumers]]
+queue = "jasysai-queue"
+max_batch_size = 10
+max_batch_timeout = 30
