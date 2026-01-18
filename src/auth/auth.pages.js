@@ -720,13 +720,44 @@ export const AdminApp = (data) => `
 
 // Login/Register Pages
 export const LoginPage = () => `
-<!DOCTYPE html><html lang="en" class="dark"><head><meta charset="UTF-8"><script src="https://cdn.tailwindcss.com"></script></head>
-<body class="bg-[#010409] text-slate-300 min-h-screen flex items-center justify-center p-6">
-  <div class="w-full max-w-md">
-    <div class="text-center mb-8">
-      <div class="text-3xl font-black text-white mb-2">${CONFIG.site_name}</div>
-      <div class="text-slate-500 text-sm">Sign in to your account</div>
+<!DOCTYPE html><html lang="en" class="dark"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Sign In - ${CONFIG.site_name}</title><meta name="description" content="Sign in to your ${CONFIG.site_name} account to access AI models and manage your usage."><script src="https://cdn.tailwindcss.com"></script></head>
+<body class="bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 text-white min-h-screen">
+  <!-- Navigation -->
+  <nav class="fixed top-0 w-full bg-slate-900/80 backdrop-blur-md border-b border-slate-800/50 z-50">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+      <div class="flex items-center gap-3 font-bold text-2xl">
+        ${LOGO_SVG} ${CONFIG.site_name}
+      </div>
+      <div class="hidden md:flex items-center gap-6">
+        <a href="/" class="text-slate-300 hover:text-white transition">Home</a>
+        <a href="/#features" class="text-slate-300 hover:text-white transition">Features</a>
+        <a href="/#pricing" class="text-slate-300 hover:text-white transition">Pricing</a>
+        <button onclick="showRegister()" class="bg-slate-800 px-6 py-2 rounded-full font-bold hover:bg-slate-700 transition">Get Started</button>
+      </div>
+      <button onclick="toggleMobileMenu()" class="md:hidden text-white">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+        </svg>
+      </button>
     </div>
+    <!-- Mobile Menu -->
+    <div id="mobileMenu" class="hidden md:hidden bg-slate-900/95 backdrop-blur-md border-t border-slate-800/50">
+      <div class="px-6 py-4 space-y-3">
+        <a href="/" class="block text-slate-300 hover:text-white transition">Home</a>
+        <a href="/#features" class="block text-slate-300 hover:text-white transition">Features</a>
+        <a href="/#pricing" class="block text-slate-300 hover:text-white transition">Pricing</a>
+        <button onclick="showRegister()" class="w-full bg-slate-800 px-6 py-2 rounded-full font-bold hover:bg-slate-700 transition">Get Started</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <div class="pt-32 pb-20 px-6 min-h-screen flex items-center justify-center">
+    <div class="w-full max-w-md">
+      <div class="text-center mb-8">
+        <div class="text-3xl font-black text-white mb-2">${CONFIG.site_name}</div>
+        <div class="text-slate-400 text-sm">Sign in to your account</div>
+      </div>
     
     <div class="bg-slate-900 border border-slate-800 p-8 rounded-[2.5rem] shadow-2xl">
       <form id="loginForm" onsubmit="handleLogin(event)">
@@ -794,13 +825,44 @@ export const LoginPage = () => `
 </body></html>`;
 
 export const RegisterPage = () => `
-<!DOCTYPE html><html lang="en" class="dark"><head><meta charset="UTF-8"><script src="https://cdn.tailwindcss.com"></script></head>
-<body class="bg-[#010409] text-slate-300 min-h-screen flex items-center justify-center p-6">
-  <div class="w-full max-w-md">
-    <div class="text-center mb-8">
-      <div class="text-3xl font-black text-white mb-2">${CONFIG.site_name}</div>
-      <div class="text-slate-500 text-sm">Create your account</div>
+<!DOCTYPE html><html lang="en" class="dark"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Sign Up - ${CONFIG.site_name}</title><meta name="description" content="Create your ${CONFIG.site_name} account to access AI models and start building amazing applications."><script src="https://cdn.tailwindcss.com"></script></head>
+<body class="bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 text-white min-h-screen">
+  <!-- Navigation -->
+  <nav class="fixed top-0 w-full bg-slate-900/80 backdrop-blur-md border-b border-slate-800/50 z-50">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+      <div class="flex items-center gap-3 font-bold text-2xl">
+        ${LOGO_SVG} ${CONFIG.site_name}
+      </div>
+      <div class="hidden md:flex items-center gap-6">
+        <a href="/" class="text-slate-300 hover:text-white transition">Home</a>
+        <a href="/#features" class="text-slate-300 hover:text-white transition">Features</a>
+        <a href="/#pricing" class="text-slate-300 hover:text-white transition">Pricing</a>
+        <button onclick="showLogin()" class="bg-brand px-6 py-2 rounded-full font-bold hover:bg-brand/90 transition">Sign In</button>
+      </div>
+      <button onclick="toggleMobileMenu()" class="md:hidden text-white">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+        </svg>
+      </button>
     </div>
+    <!-- Mobile Menu -->
+    <div id="mobileMenu" class="hidden md:hidden bg-slate-900/95 backdrop-blur-md border-t border-slate-800/50">
+      <div class="px-6 py-4 space-y-3">
+        <a href="/" class="block text-slate-300 hover:text-white transition">Home</a>
+        <a href="/#features" class="block text-slate-300 hover:text-white transition">Features</a>
+        <a href="/#pricing" class="block text-slate-300 hover:text-white transition">Pricing</a>
+        <button onclick="showLogin()" class="w-full bg-brand px-6 py-2 rounded-full font-bold hover:bg-brand/90 transition">Sign In</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <div class="pt-32 pb-20 px-6 min-h-screen flex items-center justify-center">
+    <div class="w-full max-w-md">
+      <div class="text-center mb-8">
+        <div class="text-3xl font-black text-white mb-2">${CONFIG.site_name}</div>
+        <div class="text-slate-400 text-sm">Create your account</div>
+      </div>
     
     <div class="bg-slate-900 border border-slate-800 p-8 rounded-[2.5rem] shadow-2xl">
       <form id="registerForm" onsubmit="handleRegister(event)">
