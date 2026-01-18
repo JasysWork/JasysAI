@@ -721,9 +721,9 @@ export const AdminApp = (data) => `
 // Login/Register Pages
 export const LoginPage = () => `
 <!DOCTYPE html><html lang="en" class="dark"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Sign In - ${CONFIG.site_name}</title><meta name="description" content="Sign in to your ${CONFIG.site_name} account to access AI models and manage your usage."><script src="https://cdn.tailwindcss.com"></script></head>
-<body class="bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 text-white min-h-screen">
+<body class="bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 text-white min-h-screen grid grid-rows-[auto_1fr_auto]">
   <!-- Navigation -->
-  <nav class="fixed top-0 w-full bg-slate-900/80 backdrop-blur-md border-b border-slate-800/50 z-50">
+  <nav class="bg-slate-900/80 backdrop-blur-md border-b border-slate-800/50">
     <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
       <div class="flex items-center gap-3 font-bold text-2xl">
         ${LOGO_SVG} ${CONFIG.site_name}
@@ -752,37 +752,38 @@ export const LoginPage = () => `
   </nav>
 
   <!-- Main Content -->
-  <div class="pt-32 pb-20 px-6 flex items-center justify-center" style="min-height: calc(100vh - 200px);">
+  <main class="px-6 flex items-center justify-center">
     <div class="w-full max-w-md">
       <div class="text-center mb-8">
         <div class="text-3xl font-black text-white mb-2">${CONFIG.site_name}</div>
         <div class="text-slate-400 text-sm">Sign in to your account</div>
       </div>
-    
+
     <div class="bg-slate-900 border border-slate-800 p-8 rounded-[2.5rem] shadow-2xl">
       <form id="loginForm" onsubmit="handleLogin(event)">
         <div class="mb-6">
           <label class="block text-sm font-medium text-slate-400 mb-2">Email</label>
           <input type="email" id="email" required class="w-full bg-slate-800 border border-slate-700 p-4 rounded-xl text-white focus:border-brand focus:outline-none transition" placeholder="your@email.com">
         </div>
-        
+
         <div class="mb-6">
           <label class="block text-sm font-medium text-slate-400 mb-2">Password</label>
           <input type="password" id="password" required class="w-full bg-slate-800 border border-slate-700 p-4 rounded-xl text-white focus:border-brand focus:outline-none transition" placeholder="••••••••">
         </div>
-        
+
         <button type="submit" id="loginBtn" class="w-full bg-brand text-white p-4 rounded-xl font-bold hover:bg-brand/90 transition disabled:opacity-50">
           Sign In
         </button>
-        
+
         <div class="text-center mt-6">
           <span class="text-slate-500 text-sm">Don't have an account? </span>
           <button type="button" onclick="showRegister()" class="text-brand text-sm hover:underline">Sign up</button>
         </div>
       </form>
     </div>
-    
+
   </div>
+  </main>
 
   <!-- Footer -->
   <footer class="bg-slate-900/80 backdrop-blur-sm border-t border-slate-800/50 py-12 px-6">
@@ -873,9 +874,9 @@ export const LoginPage = () => `
 
 export const RegisterPage = () => `
 <!DOCTYPE html><html lang="en" class="dark"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Sign Up - ${CONFIG.site_name}</title><meta name="description" content="Create your ${CONFIG.site_name} account to access AI models and start building amazing applications."><script src="https://cdn.tailwindcss.com"></script></head>
-<body class="bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 text-white min-h-screen">
+<body class="bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 text-white min-h-screen grid grid-rows-[auto_1fr_auto]">
   <!-- Navigation -->
-  <nav class="fixed top-0 w-full bg-slate-900/80 backdrop-blur-md border-b border-slate-800/50 z-50">
+  <nav class="bg-slate-900/80 backdrop-blur-md border-b border-slate-800/50">
     <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
       <div class="flex items-center gap-3 font-bold text-2xl">
         ${LOGO_SVG} ${CONFIG.site_name}
@@ -904,42 +905,43 @@ export const RegisterPage = () => `
   </nav>
 
   <!-- Main Content -->
-  <div class="pt-32 pb-20 px-6 flex items-center justify-center" style="min-height: calc(100vh - 200px);">
+  <main class="px-6 flex items-center justify-center">
     <div class="w-full max-w-md">
       <div class="text-center mb-8">
         <div class="text-3xl font-black text-white mb-2">${CONFIG.site_name}</div>
         <div class="text-slate-400 text-sm">Create your account</div>
       </div>
-    
+
     <div class="bg-slate-900 border border-slate-800 p-8 rounded-[2.5rem] shadow-2xl">
       <form id="registerForm" onsubmit="handleRegister(event)">
         <div class="mb-4">
           <label class="block text-sm font-medium text-slate-400 mb-2">Full Name</label>
           <input type="text" id="name" required class="w-full bg-slate-800 border border-slate-700 p-4 rounded-xl text-white focus:border-brand focus:outline-none transition" placeholder="John Doe">
         </div>
-        
+
         <div class="mb-4">
           <label class="block text-sm font-medium text-slate-400 mb-2">Email</label>
           <input type="email" id="email" required class="w-full bg-slate-800 border border-slate-700 p-4 rounded-xl text-white focus:border-brand focus:outline-none transition" placeholder="your@email.com">
         </div>
-        
+
         <div class="mb-6">
           <label class="block text-sm font-medium text-slate-400 mb-2">Password</label>
           <input type="password" id="password" required minlength="6" class="w-full bg-slate-800 border border-slate-700 p-4 rounded-xl text-white focus:border-brand focus:outline-none transition" placeholder="••••••••">
         </div>
-        
+
         <button type="submit" id="registerBtn" class="w-full bg-brand text-white p-4 rounded-xl font-bold hover:bg-brand/90 transition disabled:opacity-50">
           Create Account
         </button>
-        
+
         <div class="text-center mt-6">
           <span class="text-slate-500 text-sm">Already have an account? </span>
           <button type="button" onclick="showLogin()" class="text-brand text-sm hover:underline">Sign in</button>
         </div>
       </form>
     </div>
-    
+
   </div>
+  </main>
 
   <!-- Footer -->
   <footer class="bg-slate-900/80 backdrop-blur-sm border-t border-slate-800/50 py-12 px-6">
