@@ -3,10 +3,22 @@ import { CONFIG } from '../config/index.js';
 export const resJSON = (d, s=200) => new Response(JSON.stringify(d), {status:s, headers:{'Content-Type':'application/json','Access-Control-Allow-Origin':'*'}});
 
 export const DB = {
-  get: async (env, k) => await env.JASYSAI_KV.get(k, {type:'json'}),
-  set: async (env, k, v, ttl=null) => await env.JASYSAI_KV.put(k, JSON.stringify(v), ttl ? {expirationTtl: ttl} : {}),
-  list: async (env, p) => await env.JASYSAI_KV.list({prefix:p}),
-  del: async (env, k) => await env.JASYSAI_KV.delete(k)
+  get: async (env, k) => {
+    if (!env.JASYSAI_KV) return null;
+    return await env.JASYSAI_KV.get(k, {type:'json'});
+  },
+  set: async (env, k, v, ttl=null) => {
+    if (!env.JASYSAI_KV) return null;
+    return await env.JASYSAI_KV.put(k, JSON.stringify(v), ttl ? {expirationTtl: ttl} : {});
+  },
+  list: async (env, p) => {
+    if (!env.JASYSAI_KV) return { keys: [] };
+    return await env.JASYSAI_KV.list({prefix:p});
+  },
+  del: async (env, k) => {
+    if (!env.JASYSAI_KV) return null;
+    return await env.JASYSAI_KV.delete(k);
+  }
 };
 
 export async function handleBilling(env, email, modelId, usage) {

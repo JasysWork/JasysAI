@@ -3,8 +3,9 @@
 export class ConfigService {
   static async getGuestLimit(env) {
     try {
-      // Use DB instead of direct KV access for consistency
-      const settings = await env.DB.get('sys_settings');
+      // Import DB to avoid circular dependencies
+      const { DB } = await import('../db/database.js');
+      const settings = await DB.get(env, 'sys_settings');
       if (settings) {
         return settings.guest_limit || 5; // Default fallback
       }
@@ -16,10 +17,11 @@ export class ConfigService {
 
   static async setGuestLimit(env, limit) {
     try {
-      // Use DB instead of direct KV access for consistency
-      const settings = await env.DB.get('sys_settings') || {};
+      // Import DB to avoid circular dependencies
+      const { DB } = await import('../db/database.js');
+      const settings = await DB.get(env, 'sys_settings') || {};
       settings.guest_limit = String(parseInt(limit));
-      await env.DB.set('sys_settings', settings);
+      await DB.set(env, 'sys_settings', settings);
       return true;
     } catch (error) {
       console.error('Error setting guest limit:', error);
@@ -29,8 +31,9 @@ export class ConfigService {
 
   static async getAllSettings(env) {
     try {
-      // Use DB instead of direct KV access for consistency
-      const settings = await env.DB.get('sys_settings');
+      // Import DB to avoid circular dependencies
+      const { DB } = await import('../db/database.js');
+      const settings = await DB.get(env, 'sys_settings');
       return settings || {
         guest_limit: 5,
         openrouter_key: '',
@@ -50,9 +53,11 @@ export class ConfigService {
 
   static async updateSettings(env, settings) {
     try {
+      // Import DB to avoid circular dependencies
+      const { DB } = await import('../db/database.js');
       const current = await this.getAllSettings(env);
       const updated = { ...current, ...settings };
-      await env.CONFIG_KV.put('system_settings', JSON.stringify(updated));
+      await DB.set(env, 'sys_settings', updated);
       return true;
     } catch (error) {
       console.error('Error updating settings:', error);
@@ -62,10 +67,11 @@ export class ConfigService {
 
   static async isAdminBypassEnabled(env) {
     try {
-      const settings = await env.CONFIG_KV.get('system_settings');
+      // Import DB to avoid circular dependencies
+      const { DB } = await import('../db/database.js');
+      const settings = await DB.get(env, 'sys_settings');
       if (settings) {
-        const parsed = JSON.parse(settings);
-        return parsed.admin_bypass !== false; // Default to true
+        return settings.admin_bypass !== false; // Default to true
       }
     } catch (error) {
       console.error('Error checking admin bypass:', error);
@@ -75,10 +81,11 @@ export class ConfigService {
 
   static async setAdminBypass(env, enabled) {
     try {
-      const settings = await env.CONFIG_KV.get('system_settings');
-      const parsed = settings ? JSON.parse(settings) : {};
-      parsed.admin_bypass = enabled;
-      await env.CONFIG_KV.put('system_settings', JSON.stringify(parsed));
+      // Import DB to avoid circular dependencies
+      const { DB } = await import('../db/database.js');
+      const settings = await DB.get(env, 'sys_settings') || {};
+      settings.admin_bypass = enabled;
+      await DB.set(env, 'sys_settings', settings);
       return true;
     } catch (error) {
       console.error('Error setting admin bypass:', error);

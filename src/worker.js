@@ -36,19 +36,22 @@ export default {
 
   async scheduled(event, env, ctx) {
     try {
-      logger.info('Scheduled task started', { 
-        scheduledTime: event.scheduledTime 
+      logger.info('Scheduled task started', {
+        scheduledTime: event.scheduledTime
       });
 
-      // Clean up old sessions
-      await cleanupOldSessions(env);
-      
-      // Clean up old logs
-      await cleanupOldLogs(env);
+      // Only run cleanup if KV namespace is available
+      if (env.JASYSAI_KV) {
+        // Clean up old sessions
+        await cleanupOldSessions(env);
+        
+        // Clean up old logs
+        await cleanupOldLogs(env);
+      }
 
       logger.info('Scheduled task completed');
     } catch (error) {
-      logger.error('Scheduled task failed', { 
+      logger.error('Scheduled task failed', {
         error: error.message,
         stack: error.stack
       });

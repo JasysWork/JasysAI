@@ -6,47 +6,32 @@ compatibility_flags = ["nodejs_compat"]
 # Environment configurations
 [env.production]
 name = "jasysai"
-routes = [
-  { pattern = "your-domain.com/*", zone_name = "your-domain.com" }
-]
 
 [env.staging]
 name = "jasysai-staging"
-routes = [
-  { pattern = "staging.your-domain.com/*", zone_name = "your-domain.com" }
-]
 
-# KV Namespaces
-[[kv_namespaces]]
-binding = "JASYSAI_KV"
-id = "your-production-kv-id"
-preview_id = "your-preview-kv-id"
+# KV Namespaces - Uncomment and configure when you have actual KV namespaces
+# [[kv_namespaces]]
+# binding = "JASYSAI_KV"
+# id = "your-actual-kv-id"
+# preview_id = "your-preview-kv-id"
 
-[[env.staging.kv_namespaces]]
-binding = "JASYSAI_KV"
-id = "your-staging-kv-id"
-
-# D1 Database (if needed)
-[[d1_databases]]
-binding = "JASYSAI_DB"
-database_name = "jasysai-db"
-database_id = "your-d1-db-id"
-
-[[env.staging.d1_databases]]
-binding = "JASYSAI_DB"
-database_name = "jasysai-staging-db"
-database_id = "your-staging-d1-db-id"
+# D1 Database - Uncomment and configure when you have actual D1 database
+# [[d1_databases]]
+# binding = "JASYSAI_DB"
+# database_name = "jasysai-db"
+# database_id = "your-actual-d1-db-id"
 
 # Environment Variables
 [vars]
 ENVIRONMENT = "production"
 SITE_NAME = "JasyAI"
-SITE_URL = "https://your-domain.com"
+SITE_URL = "https://jasysai.workers.dev"
 
 [env.staging.vars]
 ENVIRONMENT = "staging"
 SITE_NAME = "JasyAI (Staging)"
-SITE_URL = "https://staging.your-domain.com"
+SITE_URL = "https://jasysai-staging.workers.dev"
 
 # Secrets (set via: wrangler secret put <KEY>)
 # Required secrets:
