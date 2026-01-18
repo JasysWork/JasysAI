@@ -1,6 +1,6 @@
 import { DB } from '../db/index.js';
 import { AuthService } from '../auth/auth.service.js';
-import { LoginPage, RegisterPage, AdminLoginPage } from '../auth/auth.pages.js';
+import { LoginPage, RegisterPage, AdminLoginPage, LandingPage } from '../auth/auth.pages.js';
 
 export async function authRoutes(request, env) {
   const url = new URL(request.url);
@@ -9,7 +9,6 @@ export async function authRoutes(request, env) {
 
   // Landing page
   if (path === '/') {
-    const { LandingPage } = await import('../auth/auth.pages.js');
     return new Response(LandingPage(), {
       headers: { 'Content-Type': 'text/html' }
     });
