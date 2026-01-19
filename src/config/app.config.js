@@ -12,11 +12,47 @@ export default {
     guest: ['openai/gpt-3.5-turbo', 'anthropic/claude-3-haiku', 'meta-llama/llama-3.1-8b-instruct'],
     user: ['openai/gpt-4', 'anthropic/claude-3-opus', 'openai/gpt-4-turbo', 'anthropic/claude-3-sonnet']
   },
-  // Packages for unlocking models
-  packages: [
-    { id: 'basic', name: 'Basic Package', price: 25000, unlocks: ['openai/gpt-4'] },
-    { id: 'premium', name: 'Premium Package', price: 50000, unlocks: ['openai/gpt-4', 'anthropic/claude-3-opus'] },
-    { id: 'ultimate', name: 'Ultimate Package', price: 100000, unlocks: ['openai/gpt-4', 'anthropic/claude-3-opus', 'openai/gpt-4-turbo'] }
+  // Subscription plans
+  subscription_plans: [
+    { 
+      id: 'free', 
+      name: 'Free Plan', 
+      price: 0, 
+      credits: 5000, 
+      users: 1, 
+      features: ['Basic models', '5,000 credits/month', 'Community support', 'Standard API rate limits']
+    },
+    { 
+      id: 'basic', 
+      name: 'Basic Plan', 
+      price: 29000, 
+      credits: 20000, 
+      users: 1, 
+      features: ['All models', '20,000 credits/month', 'Email support', 'Priority API rate limits', 'Usage analytics']
+    },
+    { 
+      id: 'pro', 
+      name: 'Pro Plan', 
+      price: 79000, 
+      credits: 60000, 
+      users: 5, 
+      features: ['All models', '60,000 credits/month', 'Priority email support', 'Higher API rate limits', 'Team management', 'Advanced analytics', 'Custom branding']
+    },
+    { 
+      id: 'enterprise', 
+      name: 'Enterprise Plan', 
+      price: 199000, 
+      credits: 200000, 
+      users: 20, 
+      features: ['All models', '200,000 credits/month', '24/7 phone support', 'Unlimited API rate limits', 'Advanced team management', 'Custom models', 'SLA guarantee', 'Dedicated account manager']
+    }
+  ],
+  // Credit packages for purchase
+  credit_packages: [
+    { id: '10k', name: '10,000 Credits', price: 15000, credits: 10000 },
+    { id: '50k', name: '50,000 Credits', price: 70000, credits: 50000 },
+    { id: '100k', name: '100,000 Credits', price: 130000, credits: 100000 },
+    { id: '500k', name: '500,000 Credits', price: 600000, credits: 500000 }
   ],
   // SEO Configuration
   seo: {
