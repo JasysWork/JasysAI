@@ -6,8 +6,8 @@ compatibility_flags = ["nodejs_compat"]
 # KV Namespaces
 [[kv_namespaces]]
 binding = "JASYSAI_KV"
-id = "jasysai-kv"
-preview_id = "jasysai-kv-preview"
+id = "1b9f1b6101684367b599c154c5911dcc"
+preview_id = "1b9f1b6101684367b599c154c5911dcc"
 
 # Environment Variables
 [vars]

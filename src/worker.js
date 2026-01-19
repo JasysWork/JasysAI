@@ -10,6 +10,52 @@ export default {
         userAgent: request.headers.get('user-agent')
       });
 
+      const url = new URL(request.url);
+      const path = url.pathname;
+
+      // Static assets - serve logo, favicon, and manifest
+      if (path.startsWith('/assets/')) {
+        if (path === '/assets/logo.png') {
+          // Return a simple SVG logo as PNG (for now)
+          const logoSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64"><rect width="64" height="64" fill="#7c3aed"/><text x="32" y="40" font-family="Arial" font-size="24" fill="white" text-anchor="middle">AI</text></svg>`;
+          return new Response(logoSvg, {
+            headers: {
+              'Content-Type': 'image/svg+xml',
+              'Cache-Control': 'public, max-age=31536000'
+            }
+          });
+        }
+
+        if (path === '/assets/site.webmanifest') {
+          // Return web app manifest for PWA
+          const manifest = {
+            name: "JasyAI - AI Gateway Platform",
+            short_name: "JasyAI",
+            description: "Powerful AI models through simple, transparent APIs",
+            start_url: "/",
+            display: "standalone",
+            background_color: "#020617",
+            theme_color: "#7c3aed",
+            icons: [
+              {
+                src: "/assets/logo.png",
+                sizes: "64x64",
+                type: "image/png"
+              }
+            ]
+          };
+
+          return new Response(JSON.stringify(manifest, null, 2), {
+            headers: {
+              'Content-Type': 'application/manifest+json',
+              'Cache-Control': 'public, max-age=31536000'
+            }
+          });
+        }
+
+        return new Response('Asset not found', { status: 404 });
+      }
+
       const response = await setupRoutes(request, env);
       
       logger.info('Request completed', { 

@@ -25,7 +25,7 @@ export async function authRoutes(request, env) {
   // Handle login POST
   if (path === '/auth/login' && method === 'POST') {
     const { email, pass } = await request.json();
-    const result = await AuthService.authenticateUser(email, pass);
+    const result = await AuthService.authenticateUser(env, email, pass);
     
     if (result.ok) {
       return new Response(JSON.stringify(result), {
@@ -45,23 +45,31 @@ export async function authRoutes(request, env) {
 
   // Handle register POST
   if (path === '/auth/register' && method === 'POST') {
-    const { name, email, pass } = await request.json();
-    const result = await AuthService.registerUser(email, pass, name);
-    
-    if (result.ok) {
+    try {
+      const { name, email, pass } = await request.json();
+      const result = await AuthService.registerUser(env, email, pass, name);
+
+      if (result.ok) {
+        return new Response(JSON.stringify(result), {
+          status: 200,
+          headers: {
+            'Content-Type': 'application/json',
+            'Set-Cookie': `t=${result.token}; Path=/; HttpOnly; SameSite=Strict; Max-Age=604800`
+          }
+        });
+      }
+
       return new Response(JSON.stringify(result), {
-        status: 200,
-        headers: { 
-          'Content-Type': 'application/json',
-          'Set-Cookie': `t=${result.token}; Path=/; HttpOnly; SameSite=Strict; Max-Age=604800`
-        }
+        status: 400,
+        headers: { 'Content-Type': 'application/json' }
+      });
+    } catch (error) {
+      console.error('Register error:', error);
+      return new Response(JSON.stringify({ err: 'Registration failed. Please try again.' }), {
+        status: 500,
+        headers: { 'Content-Type': 'application/json' }
       });
     }
-    
-    return new Response(JSON.stringify(result), {
-      status: 400,
-      headers: { 'Content-Type': 'application/json' }
-    });
   }
 
 

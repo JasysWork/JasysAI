@@ -1,17 +1,17 @@
 #!/usr/bin/env node
 
-const { execSync } = require('child_process');
-const fs = require('fs');
+import { execSync } from 'child_process';
+import fs from 'fs';
 
 console.log('🚀 JasyAI Auto Deployment');
 console.log('=========================');
 
 // Check if wrangler is logged in
 try {
-  execSync('wrangler whoami', { stdio: 'pipe' });
+  execSync('npx wrangler whoami', { stdio: 'pipe' });
 } catch (error) {
   console.log('🔐 Please login to Cloudflare first:');
-  execSync('wrangler auth login', { stdio: 'inherit' });
+  execSync('npx wrangler auth login', { stdio: 'inherit' });
 }
 
 // Create or get KV namespace for production
@@ -21,7 +21,7 @@ try {
 
   // Try to create new KV namespace
   try {
-    const output = execSync('wrangler kv:namespace create "JASYSAI_KV" --preview false', { encoding: 'utf8' });
+    const output = execSync('npx wrangler kv:namespace create "JASYSAI_KV" --preview false', { encoding: 'utf8' });
     const kvIdMatch = output.match(/"([^"]+)"/);
     kvId = kvIdMatch ? kvIdMatch[1] : null;
 
@@ -35,7 +35,7 @@ try {
   // If creation failed or no ID, try to list existing namespaces
   if (!kvId) {
     try {
-      const listOutput = execSync('wrangler kv:namespace list', { encoding: 'utf8' });
+      const listOutput = execSync('npx wrangler kv:namespace list', { encoding: 'utf8' });
       // Parse the JSON output to find our namespace
       const namespaces = JSON.parse(listOutput);
       const ourNamespace = namespaces.find(ns => ns.title === 'JASYSAI_KV');
@@ -61,7 +61,7 @@ try {
 
   // Deploy the worker
   console.log('🚀 Deploying worker...');
-  execSync('wrangler deploy', { stdio: 'inherit' });
+  execSync('npx wrangler deploy', { stdio: 'inherit' });
 
   console.log('🎉 Deployment successful!');
   console.log('🌐 Your app is now live at: https://ai.jasyscom.workers.dev');

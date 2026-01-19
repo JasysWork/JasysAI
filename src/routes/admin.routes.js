@@ -49,7 +49,7 @@ export async function adminRoutes(request, env) {
   if (path === '/admin/login' && method === 'POST') {
     const { user, pass } = await request.json();
     const { AuthService } = await import('../auth/auth.service.js');
-    const result = await AuthService.authenticateAdmin(user, pass);
+    const result = await AuthService.authenticateAdmin(env, user, pass);
     
     if (result.ok) {
       return new Response(JSON.stringify(result), {
