@@ -3,6 +3,30 @@ import { CONFIG } from '../../config/index.js';
 import { Team } from '../../models/team.model.js';
 
 export class UserController {
+  // Package Purchase (backward compatibility)
+  static async purchasePackage(env, email, packageId) {
+    const user = await DB.get(env, `u:${email}`);
+    if (!user) return { err: "User not found" };
+    
+    const pkg = CONFIG.packages.find(p => p.id === packageId);
+    if (!pkg) return { err: "Package not found" };
+    
+    if (user.credits < pkg.price) {
+      return { err: "Insufficient credits" };
+    }
+    
+    user.credits -= pkg.price;
+    user.unlocked_models = user.unlocked_models || [];
+    pkg.unlocks.forEach(model => {
+      if (!user.unlocked_models.includes(model)) {
+        user.unlocked_models.push(model);
+      }
+    });
+    
+    await DB.set(env, `u:${email}`, user);
+    return { ok: true };
+  }
+
   // API Key Management
   static async createApiKey(env, email, name) {
     const user = await DB.get(env, `u:${email}`);

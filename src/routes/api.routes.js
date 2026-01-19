@@ -78,6 +78,79 @@ export async function apiRoutes(request, env) {
         headers: { 'Content-Type': 'application/json' }
       });
     }
+
+    // Purchase credits
+    if (path === '/api/user/credits/purchase' && method === 'POST') {
+      const { packageId } = await request.json();
+      const result = await UserController.purchaseCredits(env, sess.email, packageId);
+      return new Response(JSON.stringify(result), {
+        headers: { 'Content-Type': 'application/json' }
+      });
+    }
+
+    // Subscribe to plan
+    if (path === '/api/user/subscribe' && method === 'POST') {
+      const { planId } = await request.json();
+      const result = await UserController.subscribePlan(env, sess.email, planId);
+      return new Response(JSON.stringify(result), {
+        headers: { 'Content-Type': 'application/json' }
+      });
+    }
+
+    // Team management
+    if (path === '/api/user/team/create' && method === 'POST') {
+      const { name } = await request.json();
+      const result = await UserController.createTeam(env, sess.email, name);
+      return new Response(JSON.stringify(result), {
+        headers: { 'Content-Type': 'application/json' }
+      });
+    }
+
+    if (path === '/api/user/team/join' && method === 'POST') {
+      const { teamId } = await request.json();
+      const result = await UserController.joinTeam(env, sess.email, teamId);
+      return new Response(JSON.stringify(result), {
+        headers: { 'Content-Type': 'application/json' }
+      });
+    }
+
+    if (path === '/api/user/team/leave' && method === 'POST') {
+      const result = await UserController.leaveTeam(env, sess.email);
+      return new Response(JSON.stringify(result), {
+        headers: { 'Content-Type': 'application/json' }
+      });
+    }
+
+    if (path === '/api/user/team/invite' && method === 'POST') {
+      const { email } = await request.json();
+      const result = await UserController.inviteTeamMember(env, sess.email, email);
+      return new Response(JSON.stringify(result), {
+        headers: { 'Content-Type': 'application/json' }
+      });
+    }
+
+    if (path === '/api/user/team/remove' && method === 'POST') {
+      const { email } = await request.json();
+      const result = await UserController.removeTeamMember(env, sess.email, email);
+      return new Response(JSON.stringify(result), {
+        headers: { 'Content-Type': 'application/json' }
+      });
+    }
+
+    if (path === '/api/user/team/update-role' && method === 'POST') {
+      const { email, role } = await request.json();
+      const result = await UserController.updateTeamMemberRole(env, sess.email, email, role);
+      return new Response(JSON.stringify(result), {
+        headers: { 'Content-Type': 'application/json' }
+      });
+    }
+
+    if (path === '/api/user/team' && method === 'GET') {
+      const team = await UserController.getTeam(env, sess.email);
+      return new Response(JSON.stringify(team), {
+        headers: { 'Content-Type': 'application/json' }
+      });
+    }
   }
 
   // Guest Chat API
