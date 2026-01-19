@@ -151,6 +151,14 @@ export async function apiRoutes(request, env) {
         headers: { 'Content-Type': 'application/json' }
       });
     }
+
+    // Get API request history
+    if (path === '/api/user/api-requests' && method === 'GET') {
+      const usageLogs = await UserController.getApiRequests(env, sess.email);
+      return new Response(JSON.stringify(usageLogs), {
+        headers: { 'Content-Type': 'application/json' }
+      });
+    }
   }
 
   // Guest Chat API

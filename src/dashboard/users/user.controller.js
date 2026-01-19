@@ -336,4 +336,37 @@ export class UserController {
       return [];
     }
   }
+
+  // API Request History
+  static async getApiRequests(env, email) {
+    const prefix = 'log:';
+    const logs = [];
+    
+    try {
+      const listResult = await DB.list(env, prefix);
+      
+      for (const logKey of listResult.keys) {
+        const logData = await DB.get(env, logKey.name);
+        if (logData && logData.email === email) {
+          logs.push({
+            time: logData.time,
+            model: logData.model,
+            cost: logData.cost,
+            status: logData.status || 'success',
+            prompt_tokens: logData.prompt_tokens || 0,
+            completion_tokens: logData.completion_tokens || 0,
+            total_tokens: logData.total_tokens || 0
+          });
+        }
+      }
+      
+      // Sort by time descending
+      logs.sort((a, b) => new Date(b.time) - new Date(a.time));
+      
+      return logs;
+    } catch (error) {
+      console.error('Error fetching API requests:', error);
+      return [];
+    }
+  }
 }

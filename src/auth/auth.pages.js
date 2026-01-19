@@ -399,7 +399,7 @@ export const LandingPage = () => `
     }
     
     function contactSales() {
-      alert('Please contact our sales team at sales@' + window.location.hostname);
+      alert('Please contact our sales team at sales@ai.jasyscom.workers.dev');
     }
     
     // Smooth scroll for anchor links
@@ -694,7 +694,7 @@ export const UserApp = (user) => `
     }
 
     // Set API base URL dynamically
-    document.getElementById('api-base-url').textContent = window.location.origin + '/v1';
+    document.getElementById('api-base-url').textContent = 'https://ai.jasyscom.workers.dev/v1';
 
     // Default to overview
     showTab('overview');

@@ -348,7 +348,7 @@ function getUserManagementPage(data) {
                 .then(data => {
                     if (data.ok) {
                         alert('Credits added successfully');
-                        window.location.reload();
+                        location.reload();
                     } else {
                         alert('Error: ' + data.err);
                     }
@@ -365,7 +365,7 @@ function getUserManagementPage(data) {
                 .then(data => {
                     if (data.ok) {
                         alert('User deleted successfully');
-                        window.location.href = '/admin/users';
+                        location.href = '/admin/users';
                     } else {
                         alert('Error: ' + data.err);
                     }
@@ -472,7 +472,7 @@ function getUsersManagementPage() {
         }
         
         function viewUser(email) {
-            window.location.href = '/admin/users/' + encodeURIComponent(email);
+            location.href = '/admin/users/' + encodeURIComponent(email);
         }
         
         function addCredits(email) {

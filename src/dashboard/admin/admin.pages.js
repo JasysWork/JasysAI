@@ -141,7 +141,7 @@ export function AdminApp(data) {
         }
         
         function viewUser(email) {
-            window.location.href = '/admin/users/' + encodeURIComponent(email);
+            location.href = '/admin/users/' + encodeURIComponent(email);
         }
         
         function addCredits(email) {

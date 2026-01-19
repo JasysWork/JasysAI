@@ -42,8 +42,19 @@ export async function handleBilling(env, email, modelId, usage) {
 
       await DB.set(env, `u:${email}`, u);
       
-      // 3. Log Detail Admin
-      await DB.set(env, `log:${Date.now()}:${email}`, { email, model: modelId, cost: costIDR, time: new Date().toISOString() }, 86400 * 30);
+      // 3. Log Detail Admin - Include more detailed information
+      const logData = {
+        email,
+        model: modelId,
+        cost: costIDR,
+        time: new Date().toISOString(),
+        prompt_tokens: usage.prompt_tokens,
+        completion_tokens: usage.completion_tokens,
+        total_tokens: usage.prompt_tokens + usage.completion_tokens,
+        status: 'success'
+      };
+      
+      await DB.set(env, `log:${Date.now()}:${email}`, logData, 86400 * 30);
       return costIDR;
     }
   }
