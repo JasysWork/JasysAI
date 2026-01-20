@@ -30,6 +30,7 @@ export function AdminApp(data) {
                 <a href="/admin/providers" class="text-slate-300 hover:text-white transition">AI Providers</a>
                 <a href="/admin/plans" class="text-slate-300 hover:text-white transition">Subscription Plans</a>
                 <a href="/admin/packages" class="text-slate-300 hover:text-white transition">Credit Packages</a>
+                <a href="/admin/content" class="text-slate-300 hover:text-white transition">Content</a>
                 <a href="/admin/settings" class="text-slate-300 hover:text-white transition">System Settings</a>
                 <button onclick="logout()" class="text-red-500 hover:text-red-400 transition">Logout</button>
             </div>
@@ -47,6 +48,7 @@ export function AdminApp(data) {
                 <a href="/admin/providers" class="block text-slate-300 hover:text-white transition">AI Providers</a>
                 <a href="/admin/plans" class="block text-slate-300 hover:text-white transition">Subscription Plans</a>
                 <a href="/admin/packages" class="block text-slate-300 hover:text-white transition">Credit Packages</a>
+                <a href="/admin/content" class="block text-slate-300 hover:text-white transition">Content</a>
                 <a href="/admin/settings" class="block text-slate-300 hover:text-white transition">System Settings</a>
                 <button onclick="logout()" class="text-red-500 hover:text-red-400 block transition">Logout</button>
             </div>

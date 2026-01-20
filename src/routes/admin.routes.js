@@ -472,127 +472,171 @@ export async function adminRoutes(request, env) {
 function getUserManagementPage(data) {
   return `
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Management - Admin Dashboard</title>
+    <meta name="description" content="User management for Jasys AI admin dashboard.">
+    <meta name="robots" content="noindex, nofollow">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚙️</text></svg>">
+    <meta name="theme-color" content="#7c3aed">
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f8fafc; }
-        .header { background: white; border-bottom: 1px solid #e2e8f0; padding: 1rem 2rem; }
-        .header h1 { color: #1e293b; font-size: 1.5rem; }
-        .container { max-width: 1200px; margin: 0 auto; padding: 2rem; }
-        .section { background: white; border-radius: 8px; border: 1px solid #e2e8f0; padding: 1.5rem; margin-bottom: 2rem; }
-        .section h2 { color: #1e293b; margin-bottom: 1rem; }
-        .btn { background: #3b82f6; color: white; padding: 0.75rem 1.5rem; border: none; border-radius: 6px; cursor: pointer; font-size: 0.875rem; margin-right: 0.5rem; }
-        .btn:hover { background: #2563eb; }
-        .btn-danger { background: #dc2626; }
-        .btn-danger:hover { background: #b91c1c; }
-        .table { width: 100%; border-collapse: collapse; }
-        .table th, .table td { padding: 0.75rem; text-align: left; border-bottom: 1px solid #f1f5f9; }
-        .table th { background: #f8fafc; color: #64748b; font-weight: 600; }
-        .user-info { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem; margin-bottom: 2rem; }
-        .info-card { background: white; padding: 1.5rem; border-radius: 8px; border: 1px solid #e2e8f0; }
-        .info-card h3 { color: #64748b; font-size: 0.875rem; margin-bottom: 0.5rem; }
-        .info-card .value { color: #1e293b; font-size: 1.5rem; font-weight: 600; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
     </style>
 </head>
-<body>
-    <div class="header">
-        <div style="display: flex; justify-content: space-between; align-items: center;">
-            <h1>User Management</h1>
-            <nav style="display: flex; gap: 1rem;">
-                <a href="/admin/dashboard" style="color: #64748b; text-decoration: none; padding: 0.5rem 1rem; border-radius: 4px;">Dashboard</a>
-                <a href="/admin/users" style="color: #1e293b; text-decoration: none; padding: 0.5rem 1rem; border-radius: 4px; background: #f1f5f9;">Users</a>
-                <a href="/admin" style="color: #dc2626; text-decoration: none; padding: 0.5rem 1rem; border-radius: 4px;">Logout</a>
-            </nav>
+<body class="bg-[#020617] text-slate-200 min-h-screen">
+    <!-- Navigation -->
+    <nav class="bg-slate-900/80 backdrop-blur-md border-b border-slate-800/50">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="flex items-center gap-3 font-bold text-2xl">
+                <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="32" height="32" rx="8" fill="url(#gradient)"/>
+                    <path d="M16 8L24 12V20L16 24L8 20V12L16 8Z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <circle cx="16" cy="16" r="3" fill="white"/>
+                    <defs>
+                        <linearGradient id="gradient" x1="0" y1="0" x2="32" y2="32">
+                            <stop offset="0%" stop-color="#7c3aed"/>
+                            <stop offset="100%" stop-color="#ec4899"/>
+                        </linearGradient>
+                    </defs>
+                </svg> User Management
+            </div>
+            <div class="hidden md:flex items-center gap-6">
+                <a href="/admin/dashboard" class="text-slate-300 hover:text-white transition">Dashboard</a>
+                <a href="/admin/users" class="text-white font-bold">Users</a>
+                <a href="/admin/providers" class="text-slate-300 hover:text-white transition">AI Providers</a>
+                <a href="/admin/plans" class="text-slate-300 hover:text-white transition">Subscription Plans</a>
+                <a href="/admin/packages" class="text-slate-300 hover:text-white transition">Credit Packages</a>
+                <a href="/admin/content" class="text-slate-300 hover:text-white transition">Content</a>
+                <a href="/admin/settings" class="text-slate-300 hover:text-white transition">System Settings</a>
+                <button onclick="logout()" class="text-red-500 hover:text-red-400 transition">Logout</button>
+            </div>
+            <button onclick="toggleMobileMenu()" class="md:hidden text-white">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                </svg>
+            </button>
         </div>
-    </div>
+        <!-- Mobile Menu -->
+        <div id="mobileMenu" class="hidden md:hidden bg-slate-900/95 backdrop-blur-md border-t border-slate-800/50">
+            <div class="px-6 py-4 space-y-3">
+                <a href="/admin/dashboard" class="block text-slate-300 hover:text-white transition">Dashboard</a>
+                <a href="/admin/users" class="block text-white font-bold">Users</a>
+                <a href="/admin/providers" class="block text-slate-300 hover:text-white transition">AI Providers</a>
+                <a href="/admin/plans" class="block text-slate-300 hover:text-white transition">Subscription Plans</a>
+                <a href="/admin/packages" class="block text-slate-300 hover:text-white transition">Credit Packages</a>
+                <a href="/admin/content" class="block text-slate-300 hover:text-white transition">Content</a>
+                <a href="/admin/settings" class="block text-slate-300 hover:text-white transition">System Settings</a>
+                <button onclick="logout()" class="text-red-500 hover:text-red-400 block transition">Logout</button>
+            </div>
+        </div>
+    </nav>
     
-    <div class="container">
-        <div class="user-info">
-            <div class="info-card">
-                <h3>Email</h3>
-                <div class="value">${data.user.email}</div>
+    <div class="max-w-7xl mx-auto px-6 py-8">
+        <!-- User Info Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+            <div class="bg-slate-900 border border-slate-800 p-6 rounded-[2.5rem]">
+                <h3 class="text-sm font-semibold text-slate-400 mb-2">Email</h3>
+                <div class="text-xl font-bold text-white">${data.user.email}</div>
             </div>
-            <div class="info-card">
-                <h3>Name</h3>
-                <div class="value">${data.user.name}</div>
+            <div class="bg-slate-900 border border-slate-800 p-6 rounded-[2.5rem]">
+                <h3 class="text-sm font-semibold text-slate-400 mb-2">Name</h3>
+                <div class="text-xl font-bold text-white">${data.user.name}</div>
             </div>
-            <div class="info-card">
-                <h3>Credits</h3>
-                <div class="value">${data.user.credits}</div>
+            <div class="bg-slate-900 border border-slate-800 p-6 rounded-[2.5rem]">
+                <h3 class="text-sm font-semibold text-slate-400 mb-2">Credits</h3>
+                <div class="text-xl font-bold text-blue-400">${data.user.credits}</div>
             </div>
-            <div class="info-card">
-                <h3>Total Usage</h3>
-                <div class="value">${data.user.total_used}</div>
+            <div class="bg-slate-900 border border-slate-800 p-6 rounded-[2.5rem]">
+                <h3 class="text-sm font-semibold text-slate-400 mb-2">Total Usage</h3>
+                <div class="text-xl font-bold text-purple-400">${data.user.total_used}</div>
             </div>
-            <div class="info-card">
-                <h3>API Keys</h3>
-                <div class="value">${data.user.api_keys?.length || 0}</div>
+            <div class="bg-slate-900 border border-slate-800 p-6 rounded-[2.5rem]">
+                <h3 class="text-sm font-semibold text-slate-400 mb-2">API Keys</h3>
+                <div class="text-xl font-bold text-green-400">${data.user.api_keys?.length || 0}</div>
             </div>
-            <div class="info-card">
-                <h3>Unlocked Models</h3>
-                <div class="value">${data.user.unlocked_models?.length || 0}</div>
+            <div class="bg-slate-900 border border-slate-800 p-6 rounded-[2.5rem]">
+                <h3 class="text-sm font-semibold text-slate-400 mb-2">Unlocked Models</h3>
+                <div class="text-xl font-bold text-yellow-400">${data.user.unlocked_models?.length || 0}</div>
             </div>
         </div>
         
-        <div class="section">
-            <h2>API Keys</h2>
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>Key</th>
-                        <th>Name</th>
-                        <th>Created</th>
-                        <th>Last Used</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    ${(data.user.api_keys || []).map(key => `
+        <!-- API Keys Section -->
+        <div class="bg-slate-900 border border-slate-800 p-8 rounded-[2.5rem] mb-8">
+            <h2 class="text-2xl font-bold text-white mb-6">API Keys</h2>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left text-sm">
+                    <thead class="bg-slate-800/50 text-slate-400 border-b border-slate-800">
                         <tr>
-                            <td>${key.key}</td>
-                            <td>${key.name}</td>
-                            <td>${new Date(key.created).toLocaleDateString()}</td>
-                            <td>${key.lastUsed ? new Date(key.lastUsed).toLocaleDateString() : 'Never'}</td>
+                            <th class="p-5">Key</th>
+                            <th class="p-5">Name</th>
+                            <th class="p-5">Created</th>
+                            <th class="p-5">Last Used</th>
                         </tr>
-                    `).join('')}
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody class="divide-y divide-slate-800">
+                        ${(data.user.api_keys || []).map(key => `
+                            <tr>
+                                <td class="p-5 text-white">${key.key}</td>
+                                <td class="p-5 text-white">${key.name}</td>
+                                <td class="p-5 text-slate-400">${new Date(key.created).toLocaleDateString()}</td>
+                                <td class="p-5 text-slate-400">${key.lastUsed ? new Date(key.lastUsed).toLocaleDateString() : 'Never'}</td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+            </div>
         </div>
         
-        <div class="section">
-            <h2>Usage History</h2>
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>Date</th>
-                        <th>Model</th>
-                        <th>Cost (IDR)</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    ${data.logs.map(log => `
+        <!-- Usage History Section -->
+        <div class="bg-slate-900 border border-slate-800 p-8 rounded-[2.5rem] mb-8">
+            <h2 class="text-2xl font-bold text-white mb-6">Usage History</h2>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left text-sm">
+                    <thead class="bg-slate-800/50 text-slate-400 border-b border-slate-800">
                         <tr>
-                            <td>${new Date(log.time).toLocaleString()}</td>
-                            <td>${log.model}</td>
-                            <td>${log.cost ? log.cost.toFixed(2) : '0'}</td>
+                            <th class="p-5">Date</th>
+                            <th class="p-5">Model</th>
+                            <th class="p-5">Cost (IDR)</th>
                         </tr>
-                    `).join('')}
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody class="divide-y divide-slate-800">
+                        ${data.logs.map(log => `
+                            <tr>
+                                <td class="p-5 text-slate-400">${new Date(log.time).toLocaleString()}</td>
+                                <td class="p-5 text-white">${log.model}</td>
+                                <td class="p-5 text-green-400">${log.cost ? log.cost.toFixed(2) : '0'}</td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+            </div>
         </div>
         
-        <div class="section">
-            <h2>Actions</h2>
-            <button class="btn" onclick="addCredits()">Add Credits</button>
-            <button class="btn btn-danger" onclick="deleteUser()">Delete User</button>
-            <button class="btn" onclick="location.href='/admin/users'">Back to Users</button>
+        <!-- Actions Section -->
+        <div class="bg-slate-900 border border-slate-800 p-8 rounded-[2.5rem]">
+            <h2 class="text-2xl font-bold text-white mb-6">Actions</h2>
+            <div class="flex flex-col md:flex-row gap-4">
+                <button class="bg-brand text-white px-6 py-3 rounded-xl font-bold hover:bg-brand/90 transition" onclick="addCredits()">Add Credits</button>
+                <button class="bg-red-600 text-white px-6 py-3 rounded-xl font-bold hover:bg-red-500 transition" onclick="deleteUser()">Delete User</button>
+                <button class="bg-slate-700 text-white px-6 py-3 rounded-xl font-bold hover:bg-slate-600 transition" onclick="location.href='/admin/users'">Back to Users</button>
+            </div>
         </div>
     </div>
     
     <script>
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobileMenu');
+            menu.classList.toggle('hidden');
+        }
+
+        function logout() {
+            localStorage.clear();
+            location.href = '/admin';
+        }
+
         function addCredits() {
             const amount = prompt('Enter number of credits to add:');
             if (amount && !isNaN(amount)) {
@@ -638,65 +682,108 @@ function getUserManagementPage(data) {
 function getUsersManagementPage() {
   return `
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Users Management - Admin Dashboard</title>
+    <meta name="description" content="Users management for Jasys AI admin dashboard.">
+    <meta name="robots" content="noindex, nofollow">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚙️</text></svg>">
+    <meta name="theme-color" content="#7c3aed">
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f8fafc; }
-        .header { background: white; border-bottom: 1px solid #e2e8f0; padding: 1rem 2rem; }
-        .header h1 { color: #1e293b; font-size: 1.5rem; }
-        .container { max-width: 1200px; margin: 0 auto; padding: 2rem; }
-        .section { background: white; border-radius: 8px; border: 1px solid #e2e8f0; padding: 1.5rem; margin-bottom: 2rem; }
-        .section h2 { color: #1e293b; margin-bottom: 1rem; }
-        .btn { background: #3b82f6; color: white; padding: 0.75rem 1.5rem; border: none; border-radius: 6px; cursor: pointer; font-size: 0.875rem; margin-right: 0.5rem; }
-        .btn:hover { background: #2563eb; }
-        .btn-danger { background: #dc2626; }
-        .btn-danger:hover { background: #b91c1c; }
-        .table { width: 100%; border-collapse: collapse; }
-        .table th, .table td { padding: 0.75rem; text-align: left; border-bottom: 1px solid #f1f5f9; }
-        .table th { background: #f8fafc; color: #64748b; font-weight: 600; }
-        .search-box { width: 100%; padding: 0.75rem; border: 1px solid #e2e8f0; border-radius: 6px; margin-bottom: 1rem; font-size: 0.875rem; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
     </style>
 </head>
-<body>
-    <div class="header">
-        <div style="display: flex; justify-content: space-between; align-items: center;">
-            <h1>Users Management</h1>
-            <nav style="display: flex; gap: 1rem;">
-                <a href="/admin/dashboard" style="color: #64748b; text-decoration: none; padding: 0.5rem 1rem; border-radius: 4px;">Dashboard</a>
-                <a href="/admin/users" style="color: #1e293b; text-decoration: none; padding: 0.5rem 1rem; border-radius: 4px; background: #f1f5f9;">Users</a>
-                <a href="/admin" style="color: #dc2626; text-decoration: none; padding: 0.5rem 1rem; border-radius: 4px;">Logout</a>
-            </nav>
+<body class="bg-[#020617] text-slate-200 min-h-screen">
+    <!-- Navigation -->
+    <nav class="bg-slate-900/80 backdrop-blur-md border-b border-slate-800/50">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="flex items-center gap-3 font-bold text-2xl">
+                <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="32" height="32" rx="8" fill="url(#gradient)"/>
+                    <path d="M16 8L24 12V20L16 24L8 20V12L16 8Z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <circle cx="16" cy="16" r="3" fill="white"/>
+                    <defs>
+                        <linearGradient id="gradient" x1="0" y1="0" x2="32" y2="32">
+                            <stop offset="0%" stop-color="#7c3aed"/>
+                            <stop offset="100%" stop-color="#ec4899"/>
+                        </linearGradient>
+                    </defs>
+                </svg> Users Management
+            </div>
+            <div class="hidden md:flex items-center gap-6">
+                <a href="/admin/dashboard" class="text-slate-300 hover:text-white transition">Dashboard</a>
+                <a href="/admin/users" class="text-white font-bold">Users</a>
+                <a href="/admin/providers" class="text-slate-300 hover:text-white transition">AI Providers</a>
+                <a href="/admin/plans" class="text-slate-300 hover:text-white transition">Subscription Plans</a>
+                <a href="/admin/packages" class="text-slate-300 hover:text-white transition">Credit Packages</a>
+                <a href="/admin/content" class="text-slate-300 hover:text-white transition">Content</a>
+                <a href="/admin/settings" class="text-slate-300 hover:text-white transition">System Settings</a>
+                <button onclick="logout()" class="text-red-500 hover:text-red-400 transition">Logout</button>
+            </div>
+            <button onclick="toggleMobileMenu()" class="md:hidden text-white">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                </svg>
+            </button>
         </div>
-    </div>
+        <!-- Mobile Menu -->
+        <div id="mobileMenu" class="hidden md:hidden bg-slate-900/95 backdrop-blur-md border-t border-slate-800/50">
+            <div class="px-6 py-4 space-y-3">
+                <a href="/admin/dashboard" class="block text-slate-300 hover:text-white transition">Dashboard</a>
+                <a href="/admin/users" class="block text-white font-bold">Users</a>
+                <a href="/admin/providers" class="block text-slate-300 hover:text-white transition">AI Providers</a>
+                <a href="/admin/plans" class="block text-slate-300 hover:text-white transition">Subscription Plans</a>
+                <a href="/admin/packages" class="block text-slate-300 hover:text-white transition">Credit Packages</a>
+                <a href="/admin/content" class="block text-slate-300 hover:text-white transition">Content</a>
+                <a href="/admin/settings" class="block text-slate-300 hover:text-white transition">System Settings</a>
+                <button onclick="logout()" class="text-red-500 hover:text-red-400 block transition">Logout</button>
+            </div>
+        </div>
+    </nav>
     
-    <div class="container">
-        <div class="section">
-            <h2>Users</h2>
-            <input type="text" id="userSearch" class="search-box" placeholder="Search users by email or name...">
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>Email</th>
-                        <th>Name</th>
-                        <th>Credits</th>
-                        <th>Usage</th>
-                        <th>Created</th>
-                        <th>API Keys</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody id="userTableBody">
-                    <!-- User data will be loaded dynamically -->
-                </tbody>
-            </table>
+    <div class="max-w-7xl mx-auto px-6 py-8">
+        <div class="bg-slate-900 border border-slate-800 p-8 rounded-[2.5rem]">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                <h2 class="text-2xl font-bold text-white">Users</h2>
+            </div>
+            
+            <input type="text" id="userSearch" class="w-full bg-slate-800 border border-slate-700 p-4 rounded-xl text-white focus:border-brand focus:outline-none mb-6" placeholder="Search users by email or name...">
+            
+            <div class="overflow-x-auto">
+                <table class="w-full text-left text-sm">
+                    <thead class="bg-slate-800/50 text-slate-400 border-b border-slate-800">
+                        <tr>
+                            <th class="p-5">Email</th>
+                            <th class="p-5">Name</th>
+                            <th class="p-5">Credits</th>
+                            <th class="p-5">Usage</th>
+                            <th class="p-5">Created</th>
+                            <th class="p-5">API Keys</th>
+                            <th class="p-5">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="userTableBody" class="divide-y divide-slate-800">
+                        <!-- User data will be loaded dynamically -->
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
     
     <script>
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobileMenu');
+            menu.classList.toggle('hidden');
+        }
+
+        function logout() {
+            localStorage.clear();
+            location.href = '/admin';
+        }
+
         // Load users on page load
         document.addEventListener('DOMContentLoaded', function() {
             loadUsers();
@@ -709,16 +796,16 @@ function getUsersManagementPage() {
                     const tbody = document.getElementById('userTableBody');
                     tbody.innerHTML = users.map(user => \`
                         <tr>
-                            <td>\${user.email}</td>
-                            <td>\${user.name}</td>
-                            <td>\${user.credits}</td>
-                            <td>\${user.total_used}</td>
-                            <td>\${new Date(user.created).toLocaleDateString()}</td>
-                            <td>\${user.api_keys_count}</td>
-                            <td>
-                                <button class="btn" onclick="viewUser('\${user.email}')">View</button>
-                                <button class="btn" onclick="addCredits('\${user.email}')">Add Credits</button>
-                                <button class="btn btn-danger" onclick="deleteUser('\${user.email}')">Delete</button>
+                            <td class="p-5 text-white">\${user.email}</td>
+                            <td class="p-5 text-white">\${user.name}</td>
+                            <td class="p-5 text-blue-400">\${user.credits}</td>
+                            <td class="p-5 text-purple-400">\${user.total_used}</td>
+                            <td class="p-5 text-slate-400">\${new Date(user.created).toLocaleDateString()}</td>
+                            <td class="p-5 text-green-400">\${user.api_keys_count}</td>
+                            <td class="p-5">
+                                <button class="bg-brand text-white px-4 py-2 rounded-xl font-bold hover:bg-brand/90 transition mr-2" onclick="viewUser('\${user.email}')">View</button>
+                                <button class="bg-green-600 text-white px-4 py-2 rounded-xl font-bold hover:bg-green-500 transition mr-2" onclick="addCredits('\${user.email}')">Add Credits</button>
+                                <button class="bg-red-600 text-white px-4 py-2 rounded-xl font-bold hover:bg-red-500 transition" onclick="deleteUser('\${user.email}')">Delete</button>
                             </td>
                         </tr>
                     \`).join('');
