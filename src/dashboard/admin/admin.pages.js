@@ -146,20 +146,20 @@ export function AdminApp(data) {
                 .then(res => res.json())
                 .then(users => {
                     const tbody = document.getElementById('userTableBody');
-                    tbody.innerHTML = users.map(user => `
-                        <tr>
-                            <td class="p-5 text-white">${user.email}</td>
-                            <td class="p-5 text-white">${user.name}</td>
-                            <td class="p-5 text-blue-400">${user.credits}</td>
-                            <td class="p-5 text-purple-400">${user.total_used}</td>
-                            <td class="p-5 text-slate-400">${new Date(user.created).toLocaleDateString()}</td>
-                            <td class="p-5">
-                                <button class="bg-brand text-white px-4 py-2 rounded-xl font-bold hover:bg-brand/90 transition mr-2" onclick="viewUser('${user.email}')">View</button>
-                                <button class="bg-green-600 text-white px-4 py-2 rounded-xl font-bold hover:bg-green-500 transition mr-2" onclick="addCredits('${user.email}')">Add Credits</button>
-                                <button class="bg-red-600 text-white px-4 py-2 rounded-xl font-bold hover:bg-red-500 transition" onclick="deleteUser('${user.email}')">Delete</button>
-                            </td>
-                        </tr>
-                    `).join('');
+                    tbody.innerHTML = users.map(user => {
+                        return '<tr>' +
+                            '<td class="p-5 text-white">' + user.email + '</td>' +
+                            '<td class="p-5 text-white">' + user.name + '</td>' +
+                            '<td class="p-5 text-blue-400">' + user.credits + '</td>' +
+                            '<td class="p-5 text-purple-400">' + user.total_used + '</td>' +
+                            '<td class="p-5 text-slate-400">' + new Date(user.created).toLocaleDateString() + '</td>' +
+                            '<td class="p-5">' +
+                                '<button class="bg-brand text-white px-4 py-2 rounded-xl font-bold hover:bg-brand/90 transition mr-2" onclick="viewUser(\'' + user.email + '\')">View</button>' +
+                                '<button class="bg-green-600 text-white px-4 py-2 rounded-xl font-bold hover:bg-green-500 transition mr-2" onclick="addCredits(\'' + user.email + '\')">Add Credits</button>' +
+                                '<button class="bg-red-600 text-white px-4 py-2 rounded-xl font-bold hover:bg-red-500 transition" onclick="deleteUser(\'' + user.email + '\')">Delete</button>' +
+                            '</td>' +
+                        '</tr>';
+                    }).join('');
                 })
                 .catch(error => {
                     console.error('Error loading users:', error);

@@ -1,0 +1,19 @@
+{
+  "parserOptions": {
+    "ecmaVersion": 2020,
+    "sourceType": "module"
+  },
+  "rules": {
+    "react/no-unknown-property": "off"
+  },
+  "overrides": [
+    {
+      "files": ["*.pages.js"],
+      "parser": "babel-eslint",
+      "rules": {
+        "no-unexpected-multiline": "off",
+        "no-mixed-spaces-and-tabs": "off"
+      }
+    }
+  ]
+}

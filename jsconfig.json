@@ -5,10 +5,13 @@
     "target": "ES2020",
     "checkJs": false,
     "allowJs": true,
-    "noEmit": true,
-    "jsx": "preserve"
+    "noEmit": true
   },
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "src/**/*.pages.js"
+  ],
+  "include": [
+    "src/**/*.js"
   ]
 }
